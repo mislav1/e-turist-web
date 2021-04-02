@@ -3,6 +3,11 @@ const path = require('path');
 const methodOverride = require('method-override');
 let adminRoutes = require('./routes/adminRoutes');
 let userRoutes = require('./routes/userRoutes');
+const db = require("./config/database")
+
+db.authenticate()
+  .then(() => console.log('Connection has been established successfully.'))
+  .catch((error) => console.error('Unable to connect to the database:', error))
 
 const app = express();
 app.use(express.json());
