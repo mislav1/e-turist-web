@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const {DB_USERNAME, DB_PASSWORD, DATABASE, HOST, NODE_ENV} = process.env
+const { DB_USERNAME, DB_PASSWORD, DATABASE, HOST, NODE_ENV } = process.env
 
 const config = {
     development: {
@@ -9,7 +9,8 @@ const config = {
             "password": DB_PASSWORD,
             "database": DATABASE,
             "host": HOST
-        }
+        },
+        uploadsFolder: "uploads"
     },
     production: {
         db: {
@@ -17,7 +18,8 @@ const config = {
             "password": DB_PASSWORD,
             "database": DATABASE,
             "host": HOST
-        }
+        },
+        uploadsFolder: "uploads"
     },
 }
 
