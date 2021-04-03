@@ -3,10 +3,11 @@ use e_turist_db;
 
 CREATE TABLE User (
     id int NOT NULL PRIMARY KEY,
-    username varchar(200) NOT NULL,
     password varchar(200) NOT NULL,
     email varchar(200) NOT NULL UNIQUE,
     picturePath varchar(200) NULL,
+    validationCode varchar(200) NULL,
+    isValidated BOOLEAN DEFAULT false,
     modifiedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX (email)
@@ -14,10 +15,11 @@ CREATE TABLE User (
 
 CREATE TABLE Administrator (
     id int NOT NULL PRIMARY KEY,
-    username varchar(200) NOT NULL,
     password varchar(200) NOT NULL,
     email varchar(200) NOT NULL UNIQUE,
     picturePath varchar(200) NULL,
+    validationCode varchar(200) NULL,
+    isValidated BOOLEAN DEFAULT false,
     modifiedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX (email)
