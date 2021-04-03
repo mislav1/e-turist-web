@@ -2,7 +2,7 @@ create database e_turist_db;
 use e_turist_db;
 
 CREATE TABLE User (
-    id int NOT NULL PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     password varchar(200) NOT NULL,
     email varchar(200) NOT NULL UNIQUE,
     picturePath varchar(200) NULL,
@@ -14,7 +14,7 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Administrator (
-    id int NOT NULL PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     password varchar(200) NOT NULL,
     email varchar(200) NOT NULL UNIQUE,
     picturePath varchar(200) NULL,
@@ -26,7 +26,7 @@ CREATE TABLE Administrator (
 );
 
 CREATE TABLE City (
-    id int NOT NULL PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     name varchar(200) NOT NULL,
     identifier varchar(200) NOT NULL UNIQUE,
     modifiedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -35,7 +35,7 @@ CREATE TABLE City (
 );
 
 CREATE TABLE Route (
-    id int NOT NULL PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     name varchar(200) NOT NULL,
     description text NULL,
     picturePath varchar(200) NULL,
@@ -46,7 +46,7 @@ CREATE TABLE Route (
 );
 
 CREATE TABLE Destination (
-    id int NOT NULL PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     name varchar(200) NOT NULL,
     description text NULL,
     picturePath varchar(200) NULL,
@@ -58,7 +58,7 @@ CREATE TABLE Destination (
 );
 
 CREATE TABLE UserDestination (
-    id int NOT NULL PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     userId INT NOT NULL,
     destinationId INT NOT NULL,
     modifiedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -68,7 +68,7 @@ CREATE TABLE UserDestination (
 );
 
 CREATE TABLE Comment (
-    id int NOT NULL PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     userId INT NOT NULL,
     routeId INT NOT NULL,
     modifiedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -78,7 +78,7 @@ CREATE TABLE Comment (
 );
 
 CREATE TABLE AccessToken (
-  id int NOT NULL PRIMARY KEY,
+  id int PRIMARY KEY AUTO_INCREMENT,
   token varchar(200),
   userId int NULL,
   adminId int NULL,

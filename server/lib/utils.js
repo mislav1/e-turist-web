@@ -1,7 +1,9 @@
+require('dotenv').config();
 const config = require("../config/config");
 const path = require("path");
 const fs = require("fs");
-const { maxFileSize, allowedExtensions } = require("../lib/constants")
+const { maxFileSize, allowedExtensions, httpStatus } = require("../lib/constants")
+const { transporter } = require("../config/nodemailer")
 
 const parseFileRequest = async (request) => {
     const fields = request.fields;
@@ -108,7 +110,80 @@ const getRandomString = (length) => {
     return text;
 };
 
+const getSuccessResponse = (data) => {
+    return {
+        status: httpStatus.Success,
+        error: null,
+        data
+    }
+}
+
+const getBadRequestResponse = (error) => {
+    return {
+        status: httpStatus.BadRequest,
+        error,
+        data: null
+    }
+}
+
+const getInternalServerErrorResponse = (error) => {
+    return {
+        status: httpStatus.InternalServerError,
+        error,
+        data: null
+    }
+}
+
+const getNotFoundErrorResponse = (error) => {
+    return {
+        status: httpStatus.NotFound,
+        error,
+        data: null
+    }
+}
+
+const getUnauthorisedErrorResponse = (error) => {
+    return {
+        status: httpStatus.Unauthorized,
+        error,
+        data: null
+    }
+}
+
+const getRegistrationFormError = (email, password) => {
+
+    if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+        return "Please enter valid email address!"
+    } else if (!/^(?=.*?[0-9])(?=.*[+!\-#$@]).{6,}$/.test(password)) {
+        return "Password must contain minimum 6 characters, at least one number and at least one special character (+,-,!,#,$,@)"
+    }
+
+    return ''
+}
+
+const sendEmail = (to, subject, text) => {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to,
+        subject,
+        text
+    }
+
+    transporter.sendMail(mailOptions, () => {
+        if (err) {
+            throw new Error({ message: err })
+        }
+    })
+}
+
 module.exports = {
     getRandomString,
-    parseFileRequest
+    parseFileRequest,
+    getSuccessResponse,
+    getBadRequestResponse,
+    getInternalServerErrorResponse,
+    getRegistrationFormError,
+    sendEmail,
+    getNotFoundErrorResponse,
+    getUnauthorisedErrorResponse
 }

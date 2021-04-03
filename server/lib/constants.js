@@ -5,6 +5,7 @@ module.exports = {
         Forbidden: 403,
         NotFound: 404,
         InternalServerError: 500,
+        Success: 200
     },
     maxFileSize: 10 * 1024 * 1024,
     allowedExtensions: [".jpg", ".png", ".jpeg"]
