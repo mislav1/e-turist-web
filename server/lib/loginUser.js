@@ -3,7 +3,25 @@ const config = require("../config/config");
 const { getRandomString } = require("../lib/utils")
 const db = require("../config/database")
 
-const loginUser = async (user) => {
+const invalidateAllUserTokens = async (userId) => {
+
+    const queryUpdateUser = `
+            UPDATE AccessToken
+            SET 
+                valid = false
+            WHERE userId = ?
+        `
+    await db.query(queryUpdateUser, { replacements: [userId] });
+}
+
+const logoutUser = async (userId) => {
+
+    await invalidateAllUserTokens(userId)
+}
+
+const loginUser = async (userId) => {
+
+    await invalidateAllUserTokens(userId)
 
     const token = getRandomString(32)
 
@@ -12,8 +30,9 @@ const loginUser = async (user) => {
             SET 
                 validationCode = null,
                 isValidated = true
+            WHERE id = ?
         `
-    await db.query(queryUpdateUser);
+    await db.query(queryUpdateUser, { replacements: [userId] });
 
     const queryInsertAccessToken = `
         INSERT INTO AccessToken (token, userId, adminId) VALUES (?, ?, ?)
@@ -21,7 +40,7 @@ const loginUser = async (user) => {
     await db.query(queryInsertAccessToken, {
         replacements: [
             token,
-            user.id,
+            userId,
             null
         ]
     });
@@ -30,5 +49,7 @@ const loginUser = async (user) => {
 }
 
 module.exports = {
-    loginUser
+    loginUser,
+    invalidateAllUserTokens,
+    logoutUser
 }

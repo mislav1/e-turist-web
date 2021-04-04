@@ -119,7 +119,7 @@ router.post('/validate-account', async (req, res) => {
             if (user.validationCode !== validationCodeHash) {
                 return res.status(httpStatus.NotFound).send(getUnauthorisedErrorResponse("Unauthorised!"))
             }
-            token = await loginUser(user)
+            token = await loginUser(user.id)
         }
 
         delete user.password;
