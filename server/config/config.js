@@ -1,4 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({
+    path: path.join(__dirname, "../../", '.env')
+});
 
 const { DB_USERNAME, DB_PASSWORD, DATABASE, HOST, NODE_ENV, CRYPTO_SECRET } = process.env
 

@@ -23,20 +23,20 @@ router.post('/register', formidableMiddleware({ multiples: true }), async (req, 
 
         const body = await parseFileRequest(req)
 
-        const { email, password } = body
+        const { email, password, fullName } = body
 
-        if (!email || !password) {
-            return res.status(httpStatus.BadRequest).send(getBadRequestResponse("Wrong parameters!"))
+        if (!email || !password || !fullName) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
         }
 
         const registrationFormError = getRegistrationFormError(email, password)
 
         if (registrationFormError) {
-            return res.status(httpStatus.BadRequest).send(getBadRequestResponse(registrationFormError))
+            return res.send(getBadRequestResponse(registrationFormError))
         }
 
         if (body.error) {
-            return res.status(httpStatus.BadRequest).send(getBadRequestResponse(body.error))
+            return res.send(getBadRequestResponse(body.error))
         }
 
         // check if email already exists
@@ -45,11 +45,11 @@ router.post('/register', formidableMiddleware({ multiples: true }), async (req, 
             WHERE email = ?
         `
         const [users] = await db.query(queryFindUser, {
-            replacements: [email]
+            replacements: [email, true]
         });
 
-        if (users.length > 0) {
-            return res.status(httpStatus.BadRequest).send(getBadRequestResponse("Email already taken!"))
+        if (users.length > 0 && users[0].isValidated) {
+            return res.send(getBadRequestResponse("Email already taken!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -62,18 +62,30 @@ router.post('/register', formidableMiddleware({ multiples: true }), async (req, 
             .update(validationCode + cryptoSecret)
             .digest('hex')
 
-        const queryInsertUser = `
+        if (users.length === 0) {
+            const queryInsertUser = `
             INSERT INTO User
-            (email, password, picturePath, validationCode)
-            VALUES (?, ?, ?, ?)
+            (email, password, picturePath, validationCode, fullName)
+            VALUES (?, ?, ?, ?, ?)
         `
-        await db.query(queryInsertUser, {
-            replacements: [
-                email,
-                passwordHash,
-                (body.files && body.files.length > 0) ? body.files[0].localFilename : null,
-                validationCodeHash]
-        });
+            await db.query(queryInsertUser, {
+                replacements: [
+                    email,
+                    passwordHash,
+                    (body.files && body.files.length > 0) ? body.files[0].localFilename : null,
+                    validationCodeHash,
+                    fullName
+                ]
+            });
+        } else {
+            const queryUpdateUser = `
+            UPDATE User
+            SET 
+                validationCode = ?
+            WHERE id = ?
+            `
+            await db.query(queryUpdateUser, { replacements: [validationCodeHash, users[0].id] });
+        }
 
         sendEmail(email, "Potvrdite račun", "Šifra za validaciju računa: " + validationCode)
 
@@ -90,7 +102,7 @@ router.post('/validate-account', async (req, res) => {
         const { email, password, validationCode } = req.body
 
         if (!email || !password || !validationCode) {
-            return res.status(httpStatus.BadRequest).send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Wrong parameters!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -113,7 +125,7 @@ router.post('/validate-account', async (req, res) => {
         let user = {}
 
         if (users.length !== 1) {
-            return res.status(httpStatus.NotFound).send(getNotFoundErrorResponse("User not found!"))
+            return res.send(getNotFoundErrorResponse("User not found!"))
         } else {
             user = users[0]
             if (user.validationCode !== validationCodeHash) {

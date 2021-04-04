@@ -4,6 +4,7 @@ use e_turist_db;
 CREATE TABLE User (
     id int PRIMARY KEY AUTO_INCREMENT,
     password varchar(200) NOT NULL,
+    fullName VARCHAR(200) NOT NULL,
     email varchar(200) NOT NULL UNIQUE,
     picturePath varchar(200) NULL,
     validationCode varchar(200) NULL,
