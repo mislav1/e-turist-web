@@ -1,0 +1,50 @@
+@import "../styles/styles.scss";
+@import "../styles/colors.scss";
+
+.login{
+    background-color: $light-grey;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .login-container{
+        width: 450px;
+        height: 200px;
+        margin: auto;
+        background-color: $dark-grey;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .title{
+            color: $light-grey;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        label{
+            display: flex;
+            color: $light-grey;
+            margin: 10px;
+            font-size: 25px;
+            width: 80%;
+            justify-content: space-between;
+            p{
+                padding: 0;
+                margin: 0;
+                width: 35%;
+            }
+            input{
+                flex-grow: 1;
+            }
+        }
+    }
+}
