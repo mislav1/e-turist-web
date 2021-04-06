@@ -7,7 +7,7 @@ export default (props) => {
         <div className={styles.login}>
 
             <div className={styles["login-container"]}>
-                <div className={styles.title}>E-turist Administratorsko sučelje</div>
+                <div className={styles.title}>eTurist Administratorsko sučelje</div>
                 <label>
                     <p>Email:</p>
                     <input type="text" />
@@ -16,6 +16,7 @@ export default (props) => {
                     <p>Lozinka:</p>
                     <input type="password" />
                 </label>
+                <button>OK</button>
             </div>
         </div>
     )
