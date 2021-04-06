@@ -5,7 +5,8 @@ const { httpStatus } = require('../../lib/constants')
 const formidableMiddleware = require("express-formidable")
 const shajs = require("sha.js")
 const { cryptoSecret } = require("../../config/config")
-const { loginUser } = require("../../lib/loginUser")
+const { loginUser, logoutUser } = require("../../lib/loginUser")
+const auth = require("../../lib/userAuth")
 const {
     parseFileRequest,
     getBadRequestResponse,
@@ -129,7 +130,7 @@ router.post('/validate-account', async (req, res) => {
         } else {
             user = users[0]
             if (user.validationCode !== validationCodeHash) {
-                return res.status(httpStatus.NotFound).send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
             }
             token = await loginUser(user.id)
         }
@@ -145,4 +146,57 @@ router.post('/validate-account', async (req, res) => {
     }
 })
 
+router.post('/login', async (req, res) => {
+    try {
+
+        const { email, password } = req.body
+
+        if (!email || !password) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const passwordHash = shajs('sha256')
+            .update(password + cryptoSecret)
+            .digest('hex')
+
+        const queryFindUser = `
+            SELECT * FROM User
+            WHERE email = ? AND password = ?
+        `
+        const [users] = await db.query(queryFindUser, {
+            replacements: [email, passwordHash]
+        });
+
+        let token = "";
+        let user = {}
+
+        if (users.length !== 1) {
+            return res.send(getNotFoundErrorResponse("User not found!"))
+        } else {
+            user = users[0]
+            token = await loginUser(user.id)
+        }
+
+        delete user.password;
+        delete user.validationCode;
+        user.isValidated = true;
+
+        res.send(getSuccessResponse({ user, token }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.post('/logout', auth(), async (req, res) => {
+    try {
+
+        await logoutUser(req.user.id)
+
+        res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
 module.exports = router;
