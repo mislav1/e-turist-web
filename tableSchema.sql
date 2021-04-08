@@ -98,3 +98,14 @@ ALTER TABLE Comment CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE Destination CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE Route CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE UserDestination CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+ALTER TABLE Administrator
+  DROP COLUMN validationCode,
+  DROP COLUMN isValidated,
+  DROP COLUMN email,
+  ADD COLUMN isDeleted BOOLEAN DEFAULT false,
+  ADD COLUMN username VARCHAR(200) NOT NULL,
+  ADD INDEX `username_index` (`username`);
+
+insert into Administrator(username, password) 
+values('admin', '98622de9302598f55fc201b15fa0f466d2a93608c9af2d8822449eeb460e80fa');

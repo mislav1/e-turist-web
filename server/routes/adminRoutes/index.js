@@ -1,10 +1,8 @@
 let express = require('express');
 let router = express.Router();
 
-router.get('/city', async (req, res) => {
+let adminAuthentication = require('./adminAuthentication');
 
-    res.send({data: "VALLJJAAAAAAAAAAaa"});
-    
-})
+router.use('/authentication', adminAuthentication);
 
 module.exports = router;
