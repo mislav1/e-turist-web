@@ -5,11 +5,11 @@ const {
 
 checkToken = () => {
 
-    return (request, response, next) => {
+    return (req, res, next) => {
 
         (async () => {
 
-            const token = request.headers['user-token'];
+            const token = req.headers['user-token'];
 
             if (!token || token.length === 0) {
                 return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
@@ -39,7 +39,7 @@ checkToken = () => {
                 return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
             }
 
-            request.user = users[0];
+            req.user = users[0];
             next();
 
         })();
