@@ -1,0 +1,13 @@
+@import "../styles/variables.scss";
+
+.errorMessageFixed{
+    position: fixed;
+    bottom: $message-box-bottom;
+    margin: auto !important;
+    width: $message-box-width;
+}
+
+.errorMessage{
+    margin: auto !important;
+    width: $message-box-width;
+}

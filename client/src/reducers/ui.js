@@ -10,6 +10,26 @@ const isLoading = (state = false, action) => {
     }
 };
 
+const apiError = (state = null, action) => {
+    switch (action.type) {
+        case types.SET_API_ERROR:
+            return action.error;
+        default:
+            return state;
+    }
+};
+
+const apiSuccess = (state = null, action) => {
+    switch (action.type) {
+        case types.SET_API_SUCCESS:
+            return action.message;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     isLoading,
+    apiError,
+    apiSuccess
 });

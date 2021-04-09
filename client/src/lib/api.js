@@ -4,7 +4,6 @@ require('dotenv').config()
 const { REACT_APP_BASE_URL } = process.env
 
 export default new (class api {
-  constructor() { }
 
   async post(path, param) {
     try {
@@ -28,10 +27,10 @@ export default new (class api {
         body: JSON.stringify(param),
       });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         const responseBody = await response.json();
         return responseBody;
-      } else if (response.status == 404 || response.status == 403) {
+      } else if (response.status === 404 || response.status === 403) {
         history.push("/not-found");
       } else {
         const responseBody = await response.json();
@@ -87,10 +86,10 @@ export default new (class api {
         body: data,
       });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         const responseBody = await response.json();
         return responseBody;
-      } else if (response.status == 404 || response.status == 403) {
+      } else if (response.status === 404 || response.status === 403) {
         history.push("/not-found");
       } else {
         const responseBody = await response.json();
@@ -124,10 +123,10 @@ export default new (class api {
         body: JSON.stringify(param),
       });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         const responseBody = await response.json();
         return responseBody;
-      } else if (response.status == 404 || response.status == 403) {
+      } else if (response.status === 404 || response.status === 403) {
         history.push("/not-found");
       } else {
         const responseBody = await response.json();
@@ -160,10 +159,10 @@ export default new (class api {
         headers: header,
         referrer: "no-referrer", // no-referrer, *client
       });
-      if (response.status == 200) {
+      if (response.status === 200) {
         const responseBody = await response.json();
         return responseBody;
-      } else if (response.status == 404 || response.status == 403) {
+      } else if (response.status === 404 || response.status === 403) {
         history.push("/not-found");
       } else {
         const responseBody = await response.json();
@@ -196,10 +195,10 @@ export default new (class api {
         referrer: "no-referrer", // no-referrer, *client
       });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         const responseBody = await response.json();
         return responseBody;
-      } else if (response.status == 404 || response.status == 403) {
+      } else if (response.status === 404 || response.status === 403) {
         history.push("/not-found");
       } else {
         const responseBody = await response.json();
@@ -255,10 +254,10 @@ export default new (class api {
         body: data,
       });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         const responseBody = await response.json();
         return responseBody;
-      } else if (response.status == 404 || response.status == 403) {
+      } else if (response.status === 404 || response.status === 403) {
         history.push("/not-found");
       } else {
         const responseBody = await response.json();
