@@ -13,7 +13,7 @@
     align-items: center;
 
     .login-container{
-        width: 450px;
+        width: 550px;
         height: 250px;
         margin: auto;
         background-color: $dark-grey;
@@ -35,7 +35,7 @@
             color: $light-grey;
             margin: 10px;
             font-size: 25px;
-            width: 80%;
+            width: 90%;
             justify-content: space-between;
             p{
                 padding: 0;
@@ -44,6 +44,9 @@
             }
             input{
                 flex-grow: 1;
+                padding: 5px;
+                border: none;
+                outline: none;
             }
         }
 
