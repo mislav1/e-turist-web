@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useEffect } from "react"
+import { useDispatch } from "react-redux"
 import * as actions from "../actions"
 import { useHistory } from "react-router-dom";
 import styles from "./AdminBase.module.scss"
 import Sidebar from "./AdminSidebar"
 import Header from "./Header"
 
-export default ({children, title, selectedElement}) => {
+const AdminBase = ({children, title, selectedElement}) => {
     const dispatch = useDispatch();
     let history = useHistory();
 
@@ -37,3 +37,5 @@ export default ({children, title, selectedElement}) => {
         </div>
     )
 }
+
+export default AdminBase;

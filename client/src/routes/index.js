@@ -1,6 +1,6 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch, Router } from 'react-router-dom'
-import { applyMiddleware, compose, createStore } from "redux"
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { applyMiddleware, createStore } from "redux"
 import { Provider } from "react-redux"
 import ReduxThunk from "redux-thunk"
 import { composeWithDevTools } from 'redux-devtools-extension';

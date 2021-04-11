@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import * as actions from "../actions"
-import { useHistory } from "react-router-dom";
+import React from "react"
+import { useSelector } from "react-redux"
 import styles from "./Header.module.scss"
 require('dotenv').config()
 const { REACT_APP_UPLOADS_URL } = process.env
 
-export default ({ title = "" }) => {
-    const dispatch = useDispatch();
-    let history = useHistory();
+const ContentHeader = ({ title = "" }) => {
 
     const globalState = {
         adminDetails: useSelector(state => state.admin.details),
@@ -23,10 +19,12 @@ export default ({ title = "" }) => {
                 globalState.adminDetails.id &&
                 <div className={styles["admin-info"]}>
                     <p>{globalState.adminDetails.username}</p>
-                    <img src={REACT_APP_UPLOADS_URL + globalState.adminDetails.picturePath}/>
+                    <img src={REACT_APP_UPLOADS_URL + globalState.adminDetails.picturePath} alt="admin"/>
                 </div>
             }
 
         </div>
     )
 }
+
+export default ContentHeader;

@@ -4,7 +4,7 @@ import { Message } from 'semantic-ui-react'
 
 import styles from "./ErrorMessage.module.scss"
 
-export default function ErrorMessage({ title = "Uspjeh", subtitle = "", fixed = false }) {
+const ErrorMessage = ({ title = "Uspjeh", subtitle = "", fixed = false }) => {
 
     return (
         <Message positive className={fixed ? styles.errorMessageFixed : styles.ErrorMessage}>
@@ -13,3 +13,5 @@ export default function ErrorMessage({ title = "Uspjeh", subtitle = "", fixed = 
         </Message>
     )
 }
+
+export default ErrorMessage;

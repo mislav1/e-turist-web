@@ -6,7 +6,7 @@ import ErrorMessage from "../components/ErrorMessage"
 import SuccessMessage from "../components/SuccessMessage"
 import { useHistory } from "react-router-dom";
 
-export default (props) => {
+const Login = () => {
     const dispatch = useDispatch();
     let history = useHistory();
     const [username, setUsername] = useState("")
@@ -67,3 +67,5 @@ export default (props) => {
         </>
     )
 }
+
+export default Login

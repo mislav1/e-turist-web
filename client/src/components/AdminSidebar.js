@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React from "react"
+import { useDispatch } from "react-redux"
 import * as actions from "../actions"
 import { useHistory } from "react-router-dom";
 import styles from "./AdminSidebar.module.scss"
@@ -11,7 +11,7 @@ import { ReactComponent as UsersIcon } from "../assets/user.svg"
 import { ReactComponent as AdminIcon } from "../assets/admin.svg"
 import { ReactComponent as LogoutIcon } from "../assets/logout.svg"
 
-export default ({ selectedElement }) => {    
+const AdminSidebar = ({ selectedElement }) => {    
     return (
         <div className={styles["sidebar"]}>
             <div className={styles["sidebar-title"]}>eTurist</div>
@@ -71,3 +71,5 @@ function SidebarItem({ title, selected = false, children, goTo }) {
         </div>
     )
 }
+
+export default AdminSidebar;

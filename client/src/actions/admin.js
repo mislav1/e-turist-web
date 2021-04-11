@@ -1,10 +1,7 @@
-import _ from "lodash";
 import * as types from "./actionTypes";
 import api from "../lib/api";
-import * as utils from "../lib/utils";
 import { HttpStatus, LocalStorageKeyTokenAdmin } from "../lib/constants";
 import * as actions from "./index";
-import history from "../lib/history";
 
 export function loginAdmin(username, password, callback) {
     return async (dispatch, getState) => {
