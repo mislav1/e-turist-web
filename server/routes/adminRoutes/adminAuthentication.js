@@ -71,4 +71,14 @@ router.post('/logout', auth(), async (req, res) => {
     }
 })
 
+router.post('/check-token', auth(), async (req, res) => {
+    try {
+        delete req.admin.password;
+        res.send(getSuccessResponse({admin: req.admin}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
 module.exports = router;

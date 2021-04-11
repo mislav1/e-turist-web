@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch, Router } from 'react-router-dom'
 import { applyMiddleware, compose, createStore } from "redux"
 import { Provider } from "react-redux"
 import ReduxThunk from "redux-thunk"
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import createRootReducer from "../reducers"
 import Login from "../pages/Login"
@@ -18,7 +19,7 @@ const preloadedState = undefined;
 const store = createStore(
     createRootReducer(),
     preloadedState,
-    compose(applyMiddleware(ReduxThunk))
+    composeWithDevTools(applyMiddleware(ReduxThunk))
 );
 
 export default function Routes() {

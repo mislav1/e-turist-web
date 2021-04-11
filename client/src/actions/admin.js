@@ -61,3 +61,42 @@ export function logoutAdmin(callback) {
     };
 }
 
+export function checktToken(successCallback = null,  errorCallback = null) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+        
+        try {
+            const response = await api.post(
+                "/authentication/check-token"
+            );
+            
+            if(response.status === HttpStatus.Success && response.data.admin){
+                dispatch({
+                    type: types.SET_ADMIN_DETAILS,
+                    admin: response.data.admin
+                });
+                if(successCallback){
+                    successCallback();
+                }
+            } else if (response.error){
+                if(errorCallback){
+                    errorCallback();
+                }
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
+export function setAdminData(admin) {
+    return async (dispatch, getState) => {
+        dispatch({
+            types: types.SET_ADMIN_DETAILS,
+            admin: admin
+        });
+    };
+}

@@ -13,7 +13,8 @@ export default (props) => {
     const [password, setPassword] = useState("")
 
     const localActions = {
-        loginAdmin: (username, password, cb) => dispatch(actions.admin.loginAdmin(username, password, cb))
+        loginAdmin: (username, password, cb) => dispatch(actions.admin.loginAdmin(username, password, cb)),
+        checkToken: (successCallback, errorCallback) => dispatch(actions.admin.checktToken(successCallback, errorCallback))
     };
 
     const globalState = {
@@ -21,6 +22,14 @@ export default (props) => {
         apiError: useSelector(state => state.ui.apiError),
         apiSuccess: useSelector(state => state.ui.apiSuccess),
     };
+
+    useEffect(() => {
+        localActions.checkToken(successCallback)
+    }, [])
+
+    const successCallback = () => {
+        history.push("/admin/routes")
+    }
 
     const handleLogin = () => {
         localActions.loginAdmin(username, password, loginCallback)
