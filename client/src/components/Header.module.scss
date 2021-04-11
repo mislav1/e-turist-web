@@ -1,0 +1,43 @@
+.header-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .title{
+        font-family: Mulish;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 19px;
+        line-height: 24px;
+        letter-spacing: 0.4px;
+        color: #252733;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .admin-info{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        p{
+            font-family: Mulish;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: right;
+            letter-spacing: 0.2px;
+            color: #252733;
+            margin: 0 15px;
+        }
+        img{
+            height: 44px;
+            width: 44px;
+        }
+    }
+}
