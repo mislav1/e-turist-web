@@ -9,7 +9,7 @@ checkToken = () => {
 
         (async () => {
 
-            const token = req.headers['admin-token'];
+            const token = req.headers['token'];
 
             if (!token || token.length === 0) {
                 return res.send(getUnauthorisedErrorResponse("Unauthorised!"))

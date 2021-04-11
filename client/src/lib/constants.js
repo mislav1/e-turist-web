@@ -1,4 +1,4 @@
-export const LocalStorageKeyTokenAdmin = "admin-token"
+export const LocalStorageKeyTokenAdmin = "adminToken"
 export const HttpStatus = {
     BadRequest: 400,
     Unauthorized: 401,

@@ -11,46 +11,63 @@ import { ReactComponent as UsersIcon } from "../assets/user.svg"
 import { ReactComponent as AdminIcon } from "../assets/admin.svg"
 import { ReactComponent as LogoutIcon } from "../assets/logout.svg"
 
-export default ({ children, selectedElement }) => {
-    const dispatch = useDispatch();
-    let history = useHistory();
-    
+export default ({ selectedElement }) => {    
     return (
         <div className={styles["sidebar"]}>
             <div className={styles["sidebar-title"]}>eTurist</div>
-            <SidebarItem title={"Rute"} selected={selectedElement === "routes"}>
+            <SidebarItem title={"Rute"} selected={selectedElement === "routes"} goTo={"routes"}>
                 <RouteIcon />
             </SidebarItem>
-            <SidebarItem title={"Destinacije"} selected={selectedElement === "destinations"}>
+            <SidebarItem title={"Destinacije"} selected={selectedElement === "destinations"} goTo={"destinations"}>
                 <DestinationIcon />
             </SidebarItem>
-            <SidebarItem title={"Gradovi"} selected={selectedElement === "cities"}>
+            <SidebarItem title={"Gradovi"} selected={selectedElement === "cities"} goTo={"cities"}>
                 <CityIcon />
             </SidebarItem>
-            <SidebarItem title={"Komentari"} selected={selectedElement === "comments"}>
+            <SidebarItem title={"Komentari"} selected={selectedElement === "comments"} goTo={"comments"}>
                 <CommentsIcon />
             </SidebarItem>
             <div className={styles["divider"]}></div>
-            <SidebarItem title={"Korisnici"} selected={selectedElement === "users"}>
+            <SidebarItem title={"Korisnici"} selected={selectedElement === "users"} goTo={"users"}>
                 <UsersIcon />
             </SidebarItem>
-            <SidebarItem title={"Administratori"} selected={selectedElement === "admins"}>
+            <SidebarItem title={"Administratori"} selected={selectedElement === "admins"} goTo={"admins"}>
                 <AdminIcon />
             </SidebarItem>
             <div className={styles["divider"]}></div>
-            <SidebarItem title={"Odjavite se"} selected={selectedElement === "logout"}>
+            <SidebarItem title={"Odjava"} selected={selectedElement === "logout"} goTo={"logout"}>
                 <LogoutIcon />
             </SidebarItem>
         </div>
     )
 }
 
-function SidebarItem({ title, selected = false, children }) {
+function SidebarItem({ title, selected = false, children, goTo }) {
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    const localActions = {
+        logoutAdmin: (cb) => dispatch(actions.admin.logoutAdmin(cb))
+    };
+
+    const handleClick = () => {
+        if(selected){
+            return
+        } else if(goTo === "logout"){
+            localActions.logoutAdmin(logoutCallback)
+        } else {
+            history.push("/admin/" + goTo)
+        }
+    }
+
+    const logoutCallback = () => {
+        history.push("/")
+    }
 
     return (
         <div className={selected ? styles["sidebar-item-selected"] : styles["sidebar-item"]}>
-            <div className={styles["item-icon"]}>{children}</div>
-            <div className={styles["item-text"]}>{title}</div>
+            <div className={styles["item-icon"]} onClick={handleClick}>{children}</div>
+            <div className={styles["item-text"]} onClick={handleClick}>{title}</div>
         </div>
     )
 }
