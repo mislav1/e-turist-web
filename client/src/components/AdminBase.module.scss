@@ -1,0 +1,27 @@
+@import "../styles/variables.scss";
+@import "../styles/colors.scss";
+
+.base-container{
+    display: flex;
+    flex-direction: row;
+
+    .content-container{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 100vh;
+        background-color: $light-grey;
+        padding: 15px;
+    }
+
+    .content-title{
+        height: 50px;
+        width: 100%;
+    }
+
+    .content{
+        width: 100%;
+        flex-grow: 1;
+    }
+}

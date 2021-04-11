@@ -6,7 +6,7 @@ import { HttpStatus, LocalStorageKeyTokenAdmin } from "../lib/constants";
 import * as actions from "./index";
 import history from "../lib/history";
 
-export function loginAdmin(username, password, pushTo) {
+export function loginAdmin(username, password, callback) {
     return async (dispatch, getState) => {
         dispatch(actions.ui.startLoading());
         
@@ -18,8 +18,8 @@ export function loginAdmin(username, password, pushTo) {
 
             if(response.status === HttpStatus.Success && response.data.token){
                 localStorage.setItem(LocalStorageKeyTokenAdmin, response.token);
-                if(pushTo){
-                    history.push(pushTo)
+                if(callback){
+                    callback();
                 }
                 dispatch(actions.ui.setApiSucces("Admin uspješno logiran"));
             } else if (response.error){

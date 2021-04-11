@@ -4,14 +4,16 @@ import { useSelector, useDispatch } from "react-redux"
 import * as actions from "../actions"
 import ErrorMessage from "../components/ErrorMessage"
 import SuccessMessage from "../components/SuccessMessage"
+import { useHistory } from "react-router-dom";
 
 export default (props) => {
     const dispatch = useDispatch();
+    let history = useHistory();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
     const localActions = {
-        loginAdmin: (username, password, pushTo) => dispatch(actions.admin.loginAdmin(username, password, pushTo))
+        loginAdmin: (username, password, cb) => dispatch(actions.admin.loginAdmin(username, password, cb))
     };
 
     const globalState = {
@@ -21,7 +23,11 @@ export default (props) => {
     };
 
     const handleLogin = () => {
-        localActions.loginAdmin(username, password, "/admin/routes")
+        localActions.loginAdmin(username, password, loginCallback)
+    }
+
+    const loginCallback = () => {
+        history.push("/admin/routes")
     }
 
     return (
