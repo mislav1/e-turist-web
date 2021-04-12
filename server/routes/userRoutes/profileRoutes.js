@@ -81,7 +81,7 @@ router.post('/change-password', auth(), async (req, res) => {
             return res.send(getBadRequestResponse("Wrong parameters!"))
         }
 
-        const newPasswordError = getPasswordError(oldPassword)
+        const newPasswordError = getPasswordError(newPassword)
 
         if (newPasswordError) {
             return res.send(getBadRequestResponse(newPasswordError))
