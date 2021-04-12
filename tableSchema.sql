@@ -72,6 +72,7 @@ CREATE TABLE Comment (
     id int PRIMARY KEY AUTO_INCREMENT,
     userId INT NOT NULL,
     routeId INT NOT NULL,
+    comment TEXT NOT NULL,
     modifiedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (routeId) REFERENCES Route(id),
