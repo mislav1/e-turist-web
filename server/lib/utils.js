@@ -161,6 +161,15 @@ const getRegistrationFormError = (email, password) => {
     return ''
 }
 
+const getPasswordError = (password) => {
+
+    if (!/^(?=.*?[0-9])(?=.*[+!\-#$@]).{6,}$/.test(password)) {
+        return "Password must contain minimum 6 characters, at least one number and at least one special character (+,-,!,#,$,@)"
+    }
+
+    return ''
+}
+
 const sendEmail = (to, subject, text) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -185,5 +194,6 @@ module.exports = {
     getRegistrationFormError,
     sendEmail,
     getNotFoundErrorResponse,
-    getUnauthorisedErrorResponse
+    getUnauthorisedErrorResponse,
+    getPasswordError
 }

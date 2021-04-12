@@ -17,10 +17,10 @@ checkToken = () => {
 
             const queryFindToken = `
             SELECT * FROM AccessToken
-            WHERE token = ?
+            WHERE token = ?  and valid = ?
             `
             const [tokens] = await db.query(queryFindToken, {
-                replacements: [token]
+                replacements: [token, true]
             });
 
             if (tokens.length !== 1) {
