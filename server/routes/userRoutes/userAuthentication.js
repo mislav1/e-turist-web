@@ -161,7 +161,7 @@ router.post('/login', async (req, res) => {
 
         const queryFindUser = `
             SELECT * FROM User
-            WHERE email = ? AND password = ?
+            WHERE email = ? AND password = ? and isValidated = true
         `
         const [users] = await db.query(queryFindUser, {
             replacements: [email, passwordHash]
