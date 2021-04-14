@@ -39,22 +39,23 @@ router.put('/update', auth(), formidableMiddleware({ multiples: true }), async (
         }
 
         if (body.files && body.files.length > 0) {
-            if (fs.existsSync(path.join(__dirname, "../../../", "uploads", req.user.picturePath))) {
-                fs.unlink(path.join(__dirname, "../../../", "uploads", req.user.picturePath), (err) => {
-                    if (err) {
-                        console.log("Deleting file error: ", err)
-                    }
-                })
-
-                const queryUpdateUserImage = `
-                    UPDATE User
-                    SET picturePath = ?
-                    WHERE id = ?
-                `
-                await db.query(queryUpdateUserImage, {
-                    replacements: [body.files[0].localFilename, req.user.id]
-                });
+            if (req.user.picturePath) {
+                if (fs.existsSync(path.join(__dirname, "../../../", "uploads", req.user.picturePath))) {
+                    fs.unlink(path.join(__dirname, "../../../", "uploads", req.user.picturePath), (err) => {
+                        if (err) {
+                            console.log("Deleting file error: ", err)
+                        }
+                    })
+                }
             }
+            const queryUpdateUserImage = `
+                        UPDATE User
+                        SET picturePath = ?
+                        WHERE id = ?
+                    `
+            await db.query(queryUpdateUserImage, {
+                replacements: [body.files[0].localFilename, req.user.id]
+            });
         }
 
         const queryGetUser = `
