@@ -1,4 +1,5 @@
 import * as types from "./actionTypes";
+import { NotificationDuration } from "../lib/constants"
 
 export function startLoading() {
     return async (dispatch, getState) => {
@@ -18,7 +19,7 @@ export function setApiError(error) {
 
         setTimeout(() => {
             dispatch({ type: types.SET_API_ERROR, error: null });
-        }, 2000);
+        }, NotificationDuration);
     };
 }
 
@@ -28,6 +29,6 @@ export function setApiSucces(message) {
 
         setTimeout(() => {
             dispatch({ type: types.SET_API_SUCCESS, message: null });
-        }, 2000);
+        }, NotificationDuration);
     };
 }
