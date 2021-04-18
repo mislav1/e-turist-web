@@ -4,6 +4,7 @@
 .base-container{
     display: flex;
     flex-direction: row;
+    position: relative;
 
     .content-container{
         position: relative;
@@ -13,6 +14,7 @@
         min-height: 100vh;
         background-color: $light-grey;
         padding: 30px;
+        margin-left: 255px;
     }
 
     .content-title{

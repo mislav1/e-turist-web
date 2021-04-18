@@ -6,7 +6,8 @@
     min-width: 200px;
     width: 255px;
     background-color: $dark-grey;
-    height: 100vh;
+    min-height: 100vh;
+    position: fixed;
 
     .divider{
         height: 2px;
