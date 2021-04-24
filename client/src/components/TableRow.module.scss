@@ -36,8 +36,12 @@
         color: #252733;
         width: 50px;
         height: 100%;
+        div{
+            cursor: pointer;
+        }
         img{
             height: 20px;
         }
+        position: relative;
     }
 }

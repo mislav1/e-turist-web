@@ -7,10 +7,12 @@ import { useDispatch, useSelector } from "react-redux"
 import * as actions from "../../actions"
 import moment from "moment"
 import Pagination from "../../components/Pagination"
+import { useHistory } from "react-router-dom";
 
 const ListRoutes = () => {
 
     const dispatch = useDispatch();
+    let history = useHistory();
     const [headerColumns, setHeaderColumns] = useState(["ID", "Ime rute", "Slika", "Grad", "Kreirano", "Ažurirano"])
     const [dbColumns, setDbColumns] = useState(["id", "name", "picturePath", "city", "createdAt", "modifiedAt"])
     const [filters, setFilters] = useState({
@@ -66,6 +68,14 @@ const ListRoutes = () => {
         })
     }
 
+    const goToDetails = (id) => {
+        history.push(`/admin/routes/${id}/details`)
+    }
+
+    const deleteRow = (id) => {
+        console.log("Delete row: ", id)
+    }
+
     return (
         <AdminBase title={"Rute"} selectedElement={"routes"}>
             <TableBase>
@@ -80,7 +90,17 @@ const ListRoutes = () => {
                             moment(route.createdAt).format("DD.MM.YYYY HH:MM"),
                             moment(route.modifiedAt).format("DD.MM.YYYY HH:MM")
                         ]
-                        return <TableRow item={item} key={route.id} />
+                        return (
+                            <TableRow 
+                                item={item} 
+                                key={route.id}
+                                id={route.id}
+                                firstAction={goToDetails}
+                                firstTitle={"Detalji"}
+                                secondAction={deleteRow}
+                                secondTitle={"Obriši rutu"} 
+                            />
+                        )
                     })
                 }
                 {
