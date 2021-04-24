@@ -61,7 +61,8 @@ const ListRoutes = () => {
     const updateRowsPerPage = (limit) => {
         setFilters({
             ...filters,
-            limit
+            limit,
+            page: 1
         })
     }
 
