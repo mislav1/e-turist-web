@@ -110,3 +110,14 @@ ALTER TABLE Administrator
 
 insert into Administrator(username, password) 
 values('admin', '98622de9302598f55fc201b15fa0f466d2a93608c9af2d8822449eeb460e80fa');
+
+ALTER TABLE Route
+ADD COLUMN isDeleted BOOLEAN DEFAULT false;
+ALTER TABLE Destination
+ADD COLUMN isDeleted BOOLEAN DEFAULT false;
+ALTER TABLE City
+ADD COLUMN isDeleted BOOLEAN DEFAULT false;
+ALTER TABLE User
+ADD COLUMN isDeleted BOOLEAN DEFAULT false;
+ALTER TABLE Comment
+ADD COLUMN isDeleted BOOLEAN DEFAULT false;

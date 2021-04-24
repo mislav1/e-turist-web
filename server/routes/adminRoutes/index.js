@@ -1,8 +1,10 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-let adminAuthentication = require('./adminAuthentication');
+const adminAuthentication = require('./adminAuthentication');
+const adminRoutes = require('./routes');
 
 router.use('/authentication', adminAuthentication);
+router.use('/routes', adminRoutes);
 
 module.exports = router;
