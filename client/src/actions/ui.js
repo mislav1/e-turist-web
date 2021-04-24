@@ -32,3 +32,15 @@ export function setApiSucces(message) {
         }, NotificationDuration);
     };
 }
+
+export function removeApiError() {
+    return async (dispatch, getState) => {
+        dispatch({ type: types.SET_API_ERROR, error: null });
+    };
+}
+
+export function removeApiSucces(message) {
+    return async (dispatch, getState) => {
+        dispatch({ type: types.SET_API_SUCCESS, message: null });
+    };
+}

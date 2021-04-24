@@ -3,11 +3,27 @@
 .errorMessageFixed{
     position: fixed;
     bottom: $message-box-bottom;
-    margin: auto !important;
+    margin: 10px auto !important;
     width: $message-box-width;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px !important;
+    svg{
+        cursor: pointer;
+    }
 }
 
 .errorMessage{
-    margin: auto !important;
+    margin: 10px auto !important;
     width: $message-box-width;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px !important;
+    svg{
+        cursor: pointer;
+    }
 }
