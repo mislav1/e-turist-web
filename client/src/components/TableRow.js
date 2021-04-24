@@ -10,7 +10,7 @@ const TableRow = ({item}) => {
             {
                 item.map((field, index) => {
                     return (
-                    <div className={index !== 0 ? styles["row-item-container"] : styles["first-or-last"]}>
+                    <div className={index !== 0 ? styles["row-item-container"] : styles["first-or-last"]} key={index + field}>
                         {field}
                     </div>
                 )})

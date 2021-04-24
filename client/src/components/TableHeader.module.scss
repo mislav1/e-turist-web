@@ -21,6 +21,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
     .first-or-last{
         font-family: Mulish;
@@ -35,5 +36,6 @@
         align-items: center;
         width: 50px;
         height: 100%;
+        cursor: pointer;
     }
 }
