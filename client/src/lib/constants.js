@@ -7,4 +7,4 @@ export const HttpStatus = {
     InternalServerError: 500,
     Success: 200
 }
-export const NotificationDuration = 6000
+export const NotificationDuration = 5000

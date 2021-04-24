@@ -32,7 +32,9 @@
 #api-message-id{
     position: fixed !important;
     bottom: 20px !important;
-    display: flex;
-    width: 100% !important;
-    justify-content: center;
+    /* display: flex; */
+    width: 450px !important;
+    margin: 0 auto;
+    /* justify-content: center; */
+    left: calc(50% - 225px);
 }
