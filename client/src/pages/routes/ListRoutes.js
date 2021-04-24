@@ -73,6 +73,10 @@ const ListRoutes = () => {
         history.push(`/admin/routes/${id}/details`)
     }
 
+    const newRouteAction = () => {
+        history.push(`/admin/routes/new`)
+    }
+
     const deleteRow = (id) => {
         localActions.deleteOne({
             id,
@@ -117,6 +121,8 @@ const ListRoutes = () => {
                         currentPage={filters.page} 
                         updateRowsPerPage={updateRowsPerPage} 
                         count={globalState.routesData.allRoutesCount}
+                        buttonAction={newRouteAction}
+                        buttonName={"Nova ruta"}
                     />
                 }
             </TableBase>
