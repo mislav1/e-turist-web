@@ -55,5 +55,38 @@ router.post('/add-visited', auth(), async (req, res) => {
     }
 })
 
+router.get('/visited-by-user', auth(), async (req, res) => {
+    try {
+
+        let userId = req.user.id
+        let { limit, page } = req.query;
+
+        if(!limit || limit < 1) limit = 5;
+        else limit = parseInt(limit)
+
+        if(!page || page < 1) page = 1;
+        else page = parseInt(page)
+
+        const queryVisitedByUser = `
+            SELECT * FROM  UserDestination
+            WHERE userId = ?
+            ORDER BY modifiedAt desc
+            LIMIT ?, ? 
+        `
+        const [visitedDestinations] = await db.query(queryVisitedByUser, {
+            replacements: [
+                userId,
+                (page - 1) * limit,
+                limit
+            ]
+        });
+
+        res.send(getSuccessResponse({visitedDestinations}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
 
 module.exports = router;
