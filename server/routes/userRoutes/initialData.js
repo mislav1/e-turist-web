@@ -21,7 +21,7 @@ router.get('/', auth(), async (req, res) => {
 
         const queryCityData = `
             SELECT id, name, identifier FROM City as c
-            WHERE c.identifier = ?
+            WHERE c.identifier = ? AND c.isDeleted = false
         `
         const [cities] = await db.query(queryCityData, {
             replacements: [
@@ -41,7 +41,7 @@ router.get('/', auth(), async (req, res) => {
         const queryCityRoutes = `
             SELECT r.id, r.name, r.description, r.picturePath, r.cityId FROM Route as r
             RIGHT JOIN City as c on c.id = r.cityId
-            WHERE c.identifier = ?
+            WHERE c.identifier = ? AND r.isDeleted = false
         `
         const [cityRoutes] = await db.query(queryCityRoutes, {
             replacements: [
@@ -54,7 +54,7 @@ router.get('/', auth(), async (req, res) => {
             const queryRouteDestinations = `
                 SELECT d.id, d.name, d.description, d.picturePath, d.routeId, d.coordinates, ud.id as userVisited FROM Destination as d
                 LEFT JOIN UserDestination as ud on ud.destinationId = d.id and ud.userId = ?
-                WHERE routeId = ?
+                WHERE routeId = ? AND d.isDeleted = false
             `
             let [routeDestinations] = await db.query(queryRouteDestinations, {
                 replacements: [

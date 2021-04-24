@@ -6,6 +6,7 @@ const auth = require("../../lib/adminAuth")
 const {
     getSuccessResponse,
     getInternalServerErrorResponse,
+    getBadRequestResponse
 } = require("../../lib/utils")
 
 router.get('/', auth(), async (req, res) => {
@@ -52,6 +53,34 @@ router.get('/', auth(), async (req, res) => {
         });
 
         res.send(getSuccessResponse({ routes, allRoutesCount: count[0].allRoutesCount }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.put('/delete-by-id', auth(), async (req, res) => {
+    try {
+
+        let { id } = req.body;
+
+        if(!id){
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryUpdateRoute = `
+            UPDATE Route 
+            SET isDeleted = true
+            WHERE id = ?
+        `
+
+        await db.query(queryUpdateRoute, {
+            replacements: [
+                id
+            ]
+        });
+
+        res.send(getSuccessResponse({}))
     } catch (error) {
         console.error(error)
         return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))

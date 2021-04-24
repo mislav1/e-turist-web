@@ -29,7 +29,7 @@ router.get('/', auth(), async (req, res) => {
 
         const queryRouteComments = `
             SELECT * FROM Comment
-            WHERE routeId = ?
+            WHERE routeId = ? AND isDeleted = false
             ORDER BY modifiedAt DESC
             LIMIT ?, ? 
         `

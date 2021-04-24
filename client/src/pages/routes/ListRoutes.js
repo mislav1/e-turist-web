@@ -23,7 +23,8 @@ const ListRoutes = () => {
     })
 
     const localActions = {
-        getAllRoutesData: (params) => dispatch(actions.routes.getAllRoutesData(params))
+        getAllRoutesData: (params) => dispatch(actions.routes.getAllRoutesData(params)),
+        deleteOne: (params) => dispatch(actions.routes.deleteOne(params))
     };
 
     const globalState = {
@@ -73,7 +74,12 @@ const ListRoutes = () => {
     }
 
     const deleteRow = (id) => {
-        console.log("Delete row: ", id)
+        localActions.deleteOne({
+            id,
+            successCallback: () => {
+                localActions.getAllRoutesData(filters)
+            }
+        })
     }
 
     return (

@@ -28,3 +28,11 @@
         flex-grow: 1;
     }
 }
+
+#api-message-id{
+    position: fixed !important;
+    bottom: 20px !important;
+    display: flex;
+    width: 100% !important;
+    justify-content: center;
+}
