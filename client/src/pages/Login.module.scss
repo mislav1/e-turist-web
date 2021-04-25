@@ -24,6 +24,11 @@
         align-items: center;
         flex-direction: column;
 
+        .link-style{
+            color: #4183c4;
+            text-decoration: underline;
+            cursor: pointer;
+        }
         .title{
             color: $light-grey;
             font-size: 30px;
