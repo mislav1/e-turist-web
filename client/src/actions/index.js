@@ -4,6 +4,8 @@ import * as routes from "./routes"
 import * as destinations from "./destinations"
 import * as cities from "./cities"
 import * as comments from "./comments"
+import * as admins from "./admins"
+import * as users from "./users"
 
 export {
     admin,
@@ -11,5 +13,7 @@ export {
     routes,
     destinations,
     cities,
-    comments
+    comments,
+    admins,
+    users
 }

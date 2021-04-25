@@ -6,6 +6,8 @@ import routes from "./routes"
 import destinations from "./destinations"
 import cities from "./cities"
 import comments from "./comments"
+import admins from "./admins"
+import users from "./users"
 
 const fn = () => combineReducers({
     ui,
@@ -13,7 +15,9 @@ const fn = () => combineReducers({
     routes,
     destinations,
     cities,
-    comments
+    comments,
+    admins,
+    users
 });
 
 export default fn;
