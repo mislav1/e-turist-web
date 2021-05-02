@@ -68,9 +68,10 @@ router.get('/visited-by-user', auth(), async (req, res) => {
         else page = parseInt(page)
 
         const queryVisitedByUser = `
-            SELECT * FROM  UserDestination
-            WHERE userId = ?
-            ORDER BY modifiedAt desc
+            SELECT ud.modifiedAt as visitedAt, d.* FROM  UserDestination as ud
+            LEFT JOIN Destination as d on ud.destinationId = d.id
+            WHERE ud.userId = ?
+            ORDER BY ud.modifiedAt desc
             LIMIT ?, ? 
         `
         const [visitedDestinations] = await db.query(queryVisitedByUser, {
