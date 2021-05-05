@@ -10,6 +10,16 @@ const citiesData = (state = {cities: [], allCitiesCount: 0}, action) => {
     }
 };
 
+const currentCity = (state = {}, action) => {
+    switch (action.type) {
+        case types.SET_ADMIN_CURRENT_CTIY:
+            return action.city;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
-    citiesData
+    citiesData,
+    currentCity
 });

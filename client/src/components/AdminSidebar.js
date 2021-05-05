@@ -51,9 +51,7 @@ function SidebarItem({ title, selected = false, children, goTo }) {
     };
 
     const handleClick = () => {
-        if(selected){
-            return
-        } else if(goTo === "logout"){
+        if(goTo === "logout"){
             localActions.logoutAdmin(logoutCallback)
         } else {
             history.push("/admin/" + goTo)

@@ -6,7 +6,8 @@ const auth = require("../../lib/adminAuth")
 const {
     getSuccessResponse,
     getInternalServerErrorResponse,
-    getBadRequestResponse
+    getBadRequestResponse,
+    getNotFoundErrorResponse
 } = require("../../lib/utils")
 
 router.get('/', auth(), async (req, res) => {
@@ -57,12 +58,91 @@ router.get('/', auth(), async (req, res) => {
     }
 })
 
+router.get('/load-by-id', auth(), async (req, res) => {
+    try {
+
+        let { id } = req.query;
+
+        if (!id) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryCity = `
+            SELECT c.* FROM City as c
+            WHERE c.isDeleted = ? AND c.id = ?
+        `
+
+        const [cities] = await db.query(queryCity, {
+            replacements: [
+                false,
+                id
+            ]
+        });
+
+        if (cities.length !== 1) {
+            return res.send(getNotFoundErrorResponse("City not found!"))
+        }
+
+        res.send(getSuccessResponse({ city: cities[0] }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.put('/update-by-id', auth(), async (req, res) => {
+    try {
+
+        let { id, name, identifier } = req.body;
+
+        if (!id) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        if (name) {
+            const queryUpdateCityName = `
+            UPDATE City 
+            SET name = ?
+            WHERE id = ?
+        `
+
+            await db.query(queryUpdateCityName, {
+                replacements: [
+                    name,
+                    id
+                ]
+            });
+        }
+
+        if (identifier) {
+            const queryUpdateCityIdentifier = `
+            UPDATE City 
+            SET identifier = ?
+            WHERE id = ?
+        `
+
+            await db.query(queryUpdateCityIdentifier, {
+                replacements: [
+                    identifier,
+                    id
+                ]
+            });
+        }
+
+
+        res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
 router.put('/delete-by-id', auth(), async (req, res) => {
     try {
 
         let { id } = req.body;
 
-        if(!id){
+        if (!id) {
             return res.send(getBadRequestResponse("Wrong parameters!"))
         }
 
@@ -79,6 +159,35 @@ router.put('/delete-by-id', auth(), async (req, res) => {
         });
 
         res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.post('/add-new', auth(), async (req, res) => {
+    try {
+
+        let { name, identifier } = req.body;
+
+        if (!name || !identifier) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryAddCity = `
+            INSERT INTO City(name, identifier) 
+            VALUES(?,?)
+        `
+
+        const [city] = await db.query(queryAddCity, {
+            replacements: [
+                name,
+                identifier
+            ]
+        });
+
+
+        res.send(getSuccessResponse({city}))
     } catch (error) {
         console.error(error)
         return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))

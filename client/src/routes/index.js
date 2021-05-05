@@ -14,6 +14,7 @@ import ListComments from "../pages/comments/ListComments"
 import ListUsers from "../pages/users/ListUsers"
 import ListAdmins from "../pages/admins/ListAdmins"
 import NotFound from "../pages/NotFound"
+import AddEditCity from "../pages/cities/AddEditCity"
 
 const preloadedState = undefined;
 
@@ -35,6 +36,8 @@ export default function Routes() {
                     <Route path="/admin/comments" exact component={ListComments} />
                     <Route path="/admin/users" exact component={ListUsers} />
                     <Route path="/admin/admins" exact component={ListAdmins} />
+                    <Route path="/admin/cities/new" exact component={AddEditCity} />
+                    <Route path="/admin/cities/:id/details" exact component={AddEditCity} />
                     <Route component={NotFound} />
                 </Switch>
             </BrowserRouter>
