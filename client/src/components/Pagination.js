@@ -14,6 +14,7 @@ const Pagination = ({ updateRowsPerPage, rowsPerPage, updatePage, currentPage, c
     }
 
     const getFrom = () => {
+        if(count === 0) return 0
         let from = ((currentPage - 1) * rowsPerPage) + 1
         return from
     }

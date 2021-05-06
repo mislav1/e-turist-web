@@ -100,30 +100,27 @@ const ListCities = () => {
                             moment(city.modifiedAt).format("DD.MM.YYYY HH:MM")
                         ]
                         return (
-                            <TableRow 
-                                item={item} 
+                            <TableRow
+                                item={item}
                                 key={city.id}
                                 id={city.id}
                                 firstAction={goToDetails}
                                 firstTitle={"Detalji"}
                                 secondAction={deleteRow}
-                                secondTitle={"Obriši grad"} 
+                                secondTitle={"Obriši grad"}
                             />
                         )
                     })
                 }
-                {
-                    globalState.citiesData.allCitiesCount > 0 &&
-                    <Pagination 
-                        rowsPerPage={filters.limit} 
-                        updatePage={updatePage} 
-                        currentPage={filters.page} 
-                        updateRowsPerPage={updateRowsPerPage} 
-                        count={globalState.citiesData.allCitiesCount}
-                        buttonAction={newRouteAction}
-                        buttonName={"Novi grad"}
-                    />
-                }
+                <Pagination
+                    rowsPerPage={filters.limit}
+                    updatePage={updatePage}
+                    currentPage={filters.page}
+                    updateRowsPerPage={updateRowsPerPage}
+                    count={globalState.citiesData.allCitiesCount}
+                    buttonAction={newRouteAction}
+                    buttonName={"Novi grad"}
+                />
             </TableBase>
         </AdminBase>
     )

@@ -99,30 +99,27 @@ const ListAdmins = () => {
                             moment(admin.modifiedAt).format("DD.MM.YYYY HH:MM")
                         ]
                         return (
-                            <TableRow 
-                                item={item} 
+                            <TableRow
+                                item={item}
                                 key={admin.id}
                                 id={admin.id}
                                 firstAction={goToDetails}
                                 firstTitle={"Detalji"}
                                 secondAction={deleteRow}
-                                secondTitle={"Obriši administratora"} 
+                                secondTitle={"Obriši administratora"}
                             />
                         )
                     })
                 }
-                {
-                    globalState.adminsData.allAdminsCount > 0 &&
-                    <Pagination 
-                        rowsPerPage={filters.limit} 
-                        updatePage={updatePage} 
-                        currentPage={filters.page} 
-                        updateRowsPerPage={updateRowsPerPage} 
-                        count={globalState.adminsData.allAdminsCount}
-                        buttonAction={newAdminAction}
-                        buttonName={"Novi administrator"}
-                    />
-                }
+                <Pagination
+                    rowsPerPage={filters.limit}
+                    updatePage={updatePage}
+                    currentPage={filters.page}
+                    updateRowsPerPage={updateRowsPerPage}
+                    count={globalState.adminsData.allAdminsCount}
+                    buttonAction={newAdminAction}
+                    buttonName={"Novi administrator"}
+                />
             </TableBase>
         </AdminBase>
     )

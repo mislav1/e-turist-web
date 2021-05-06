@@ -14,7 +14,7 @@ const ListDestinations = () => {
     const dispatch = useDispatch();
     let history = useHistory();
     const [headerColumns, setHeaderColumns] = useState(["ID", "Ime destinacije", "Slika", "Koordinate", "Grad", "Kreirano", "Ažurirano"])
-    const [dbColumns, setDbColumns] = useState(["id", "name", "picturePath", "coordinates","city", "createdAt", "modifiedAt"])
+    const [dbColumns, setDbColumns] = useState(["id", "name", "picturePath", "coordinates", "city", "createdAt", "modifiedAt"])
     const [filters, setFilters] = useState({
         page: 1,
         orderBy: 'id',
@@ -102,30 +102,27 @@ const ListDestinations = () => {
                             moment(destination.modifiedAt).format("DD.MM.YYYY HH:MM")
                         ]
                         return (
-                            <TableRow 
-                                item={item} 
+                            <TableRow
+                                item={item}
                                 key={destination.id}
                                 id={destination.id}
                                 firstAction={goToDetails}
                                 firstTitle={"Detalji"}
                                 secondAction={deleteRow}
-                                secondTitle={"Obriši destinaciju"} 
+                                secondTitle={"Obriši destinaciju"}
                             />
                         )
                     })
                 }
-                {
-                    globalState.destinationsData.allDestinationsCount > 0 &&
-                    <Pagination 
-                        rowsPerPage={filters.limit} 
-                        updatePage={updatePage} 
-                        currentPage={filters.page} 
-                        updateRowsPerPage={updateRowsPerPage} 
-                        count={globalState.destinationsData.allDestinationsCount}
-                        buttonAction={newRouteAction}
-                        buttonName={"Nova destinacija"}
-                    />
-                }
+                <Pagination
+                    rowsPerPage={filters.limit}
+                    updatePage={updatePage}
+                    currentPage={filters.page}
+                    updateRowsPerPage={updateRowsPerPage}
+                    count={globalState.destinationsData.allDestinationsCount}
+                    buttonAction={newRouteAction}
+                    buttonName={"Nova destinacija"}
+                />
             </TableBase>
         </AdminBase>
     )

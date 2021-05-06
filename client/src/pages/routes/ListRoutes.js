@@ -101,30 +101,27 @@ const ListRoutes = () => {
                             moment(route.modifiedAt).format("DD.MM.YYYY HH:MM")
                         ]
                         return (
-                            <TableRow 
-                                item={item} 
+                            <TableRow
+                                item={item}
                                 key={route.id}
                                 id={route.id}
                                 firstAction={goToDetails}
                                 firstTitle={"Detalji"}
                                 secondAction={deleteRow}
-                                secondTitle={"Obriši rutu"} 
+                                secondTitle={"Obriši rutu"}
                             />
                         )
                     })
                 }
-                {
-                    globalState.routesData.allRoutesCount > 0 &&
-                    <Pagination 
-                        rowsPerPage={filters.limit} 
-                        updatePage={updatePage} 
-                        currentPage={filters.page} 
-                        updateRowsPerPage={updateRowsPerPage} 
-                        count={globalState.routesData.allRoutesCount}
-                        buttonAction={newRouteAction}
-                        buttonName={"Nova ruta"}
-                    />
-                }
+                <Pagination
+                    rowsPerPage={filters.limit}
+                    updatePage={updatePage}
+                    currentPage={filters.page}
+                    updateRowsPerPage={updateRowsPerPage}
+                    count={globalState.routesData.allRoutesCount}
+                    buttonAction={newRouteAction}
+                    buttonName={"Nova ruta"}
+                />
             </TableBase>
         </AdminBase>
     )

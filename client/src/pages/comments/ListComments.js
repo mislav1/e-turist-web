@@ -101,30 +101,27 @@ const ListComments = () => {
                             moment(comment.modifiedAt).format("DD.MM.YYYY HH:MM")
                         ]
                         return (
-                            <TableRow 
-                                item={item} 
+                            <TableRow
+                                item={item}
                                 key={comment.id}
                                 id={comment.id}
                                 firstAction={goToDetails}
                                 firstTitle={"Detalji"}
                                 secondAction={deleteRow}
-                                secondTitle={"Obriši komentar"} 
+                                secondTitle={"Obriši komentar"}
                             />
                         )
                     })
                 }
-                {
-                    globalState.commentsData.allCommentsCount > 0 &&
-                    <Pagination 
-                        rowsPerPage={filters.limit} 
-                        updatePage={updatePage} 
-                        currentPage={filters.page} 
-                        updateRowsPerPage={updateRowsPerPage} 
-                        count={globalState.commentsData.allCommentsCount}
-                        buttonAction={newCommentAction}
-                        buttonName={"Novi komentar"}
-                    />
-                }
+                <Pagination
+                    rowsPerPage={filters.limit}
+                    updatePage={updatePage}
+                    currentPage={filters.page}
+                    updateRowsPerPage={updateRowsPerPage}
+                    count={globalState.commentsData.allCommentsCount}
+                    buttonAction={newCommentAction}
+                    buttonName={"Novi komentar"}
+                />
             </TableBase>
         </AdminBase>
     )

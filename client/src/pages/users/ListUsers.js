@@ -100,30 +100,27 @@ const ListUsers = () => {
                             moment(user.modifiedAt).format("DD.MM.YYYY HH:MM")
                         ]
                         return (
-                            <TableRow 
-                                item={item} 
+                            <TableRow
+                                item={item}
                                 key={user.id}
                                 id={user.id}
                                 firstAction={goToDetails}
                                 firstTitle={"Detalji"}
                                 secondAction={deleteRow}
-                                secondTitle={"Obriši korisnika"} 
+                                secondTitle={"Obriši korisnika"}
                             />
                         )
                     })
                 }
-                {
-                    globalState.usersData.allUsersCount > 0 &&
-                    <Pagination 
-                        rowsPerPage={filters.limit} 
-                        updatePage={updatePage} 
-                        currentPage={filters.page} 
-                        updateRowsPerPage={updateRowsPerPage} 
-                        count={globalState.usersData.allUsersCount}
-                        buttonAction={newUserAction}
-                        buttonName={"Novi korisnik"}
-                    />
-                }
+                <Pagination
+                    rowsPerPage={filters.limit}
+                    updatePage={updatePage}
+                    currentPage={filters.page}
+                    updateRowsPerPage={updateRowsPerPage}
+                    count={globalState.usersData.allUsersCount}
+                    buttonAction={newUserAction}
+                    buttonName={"Novi korisnik"}
+                />
             </TableBase>
         </AdminBase>
     )
