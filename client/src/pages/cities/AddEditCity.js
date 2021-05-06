@@ -53,20 +53,16 @@ const AddEditCity = (props) => {
     }, [globalState.currentCity.id])
 
     const updateCity = (id) => {
-        if(!name){
+
+        if(!name || !identifier){
             setErrors({
-                ...errors,
-                name: "Ime grada je obavezno polje"
+                identifier: identifier ? "" : "Identifikator je obavezno polje",
+                name: name ? "" : "Ime grada je obavezno polje"
             })
+
             return
         }
-        if(!identifier){
-            setErrors({
-                ...errors,
-                identifier: "Identifikator je obavezno polje"
-            })
-            return
-        }
+
         localActions.updateOne({
             id,
             name: name ? name : null,
@@ -76,20 +72,15 @@ const AddEditCity = (props) => {
     }
 
     const addNewCity = () => {
-        if(!name){
+        if(!name || !identifier){
             setErrors({
-                ...errors,
-                name: "Ime grada je obavezno polje"
+                identifier: identifier ? "" : "Identifikator je obavezno polje",
+                name: name ? "" : "Ime grada je obavezno polje"
             })
+
             return
         }
-        if(!identifier){
-            setErrors({
-                ...errors,
-                identifier: "Identifikator je obavezno polje"
-            })
-            return
-        }
+
         localActions.addNewCity({
             name,
             identifier,
@@ -114,14 +105,30 @@ const AddEditCity = (props) => {
                         placeholder='Ime grada'
                         error={errors.name ? errors.name : false}
                         value={name}
-                        onChange={e => setName(e.target.value)}
+                        onChange={e => {
+                            if(e.target.value && errors.name){
+                                setErrors({
+                                    ...errors,
+                                    name: ""
+                                })
+                            }
+                            setName(e.target.value)
+                        }}
                     />
                     <Form.Input
                         fluid label='Identifikator*'
                         placeholder='Identifikator'
                         error={errors.identifier ? errors.identifier : false}
                         value={identifier}
-                        onChange={e => setIdentifier(e.target.value)}
+                        onChange={e => {
+                            if(e.target.value && errors.identifier){
+                                setErrors({
+                                    ...errors,
+                                    identifier: ""
+                                })
+                            }
+                            setIdentifier(e.target.value)
+                        }}
                     />
                 </Form>
                 {
