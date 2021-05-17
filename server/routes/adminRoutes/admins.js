@@ -1,12 +1,19 @@
 const express = require('express')
+const formidableMiddleware = require("express-formidable")
+const fs = require("fs")
+const path = require("path");
+const shajs = require("sha.js")
+const { cryptoSecret } = require("../../config/config")
 const router = express.Router()
 const db = require("../../config/database")
 const { httpStatus } = require('../../lib/constants')
 const auth = require("../../lib/adminAuth")
 const {
+    getPasswordError,
     getSuccessResponse,
     getInternalServerErrorResponse,
-    getBadRequestResponse
+    getBadRequestResponse,
+    parseFileRequest
 } = require("../../lib/utils")
 
 router.get('/', auth(), async (req, res) => {
@@ -68,7 +75,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
 
         let { id } = req.body;
 
-        if(!id){
+        if (!id) {
             return res.send(getBadRequestResponse("Wrong parameters!"))
         }
 
@@ -85,6 +92,179 @@ router.put('/delete-by-id', auth(), async (req, res) => {
         });
 
         res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
+    try {
+
+        const body = await parseFileRequest(req)
+
+        const { username, password } = body
+
+        if (!username || !password) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const registrationFormError = getPasswordError(password)
+
+        if (registrationFormError) {
+            return res.send(getBadRequestResponse(registrationFormError))
+        }
+
+        if (body.error) {
+            return res.send(getBadRequestResponse(body.error))
+        }
+
+        // check if username already exists
+        const queryFindAdmin = `
+            SELECT * FROM Administrator
+            WHERE username = ?
+        `
+        const [admins] = await db.query(queryFindAdmin, {
+            replacements: [username]
+        });
+
+        if (admins.length > 0) {
+            return res.send(getBadRequestResponse("Username already taken!"))
+        }
+
+        const passwordHash = shajs('sha256')
+            .update(password + cryptoSecret)
+            .digest('hex')
+
+        const queryInsertAdmin = `
+            INSERT INTO Administrator
+            (username, password, picturePath)
+            VALUES (?, ?, ?)
+        `
+        await db.query(queryInsertAdmin, {
+            replacements: [
+                username,
+                passwordHash,
+                (body.files && body.files.length > 0) ? body.files[0].localFilename : null,
+            ]
+        });
+
+        res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.get('/load-by-id', auth(), async (req, res) => {
+    try {
+
+        let { id } = req.query;
+
+        if (!id) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryAdmin = `
+            SELECT a.* FROM Administrator as a
+            WHERE a.isDeleted = ? AND a.id = ?
+        `
+
+        const [admins] = await db.query(queryAdmin, {
+            replacements: [
+                false,
+                id
+            ]
+        });
+
+        if (admins.length !== 1) {
+            return res.send(getNotFoundErrorResponse("Admin not found!"))
+        }
+        delete admins[0].password
+        res.send(getSuccessResponse({ admin: admins[0] }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
+    try {
+
+        const body = await parseFileRequest(req)
+
+        const { username, password, id } = body
+
+        if (!id || !username || !password) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const registrationFormError = getPasswordError(password)
+
+        if (registrationFormError) {
+            return res.send(getBadRequestResponse(registrationFormError))
+        }
+
+        const queryFindAdmin = `
+            SELECT * FROM Administrator
+            WHERE username = ? AND id <> ?
+        `
+        const [admins] = await db.query(queryFindAdmin, {
+            replacements: [username, id]
+        });
+
+        if (admins.length > 0) {
+            return res.send(getBadRequestResponse("Username already taken!"))
+        }
+
+        const passwordHash = shajs('sha256')
+            .update(password + cryptoSecret)
+            .digest('hex')
+
+        if (body.error) {
+            return res.send(getBadRequestResponse(body.error))
+        }
+
+        const queryUpdateAdmin = `
+                UPDATE Administrator
+                SET 
+                    username = ?,
+                    password = ?
+                WHERE id = ?
+            `
+        await db.query(queryUpdateAdmin, {
+            replacements: [username, passwordHash, id]
+        });
+
+        if (body.files && body.files.length > 0) {
+            if (req.admin.picturePath) {
+                if (fs.existsSync(path.join(__dirname, "../../../", "uploads", req.admin.picturePath))) {
+                    fs.unlink(path.join(__dirname, "../../../", "uploads", req.admin.picturePath), (err) => {
+                        if (err) {
+                            console.log("Deleting file error: ", err)
+                        }
+                    })
+                }
+            }
+            const queryUpdateUserImage = `
+                        UPDATE Administrator
+                        SET picturePath = ?
+                        WHERE id = ?
+                    `
+            await db.query(queryUpdateUserImage, {
+                replacements: [body.files[0].localFilename, id]
+            });
+        }
+
+        const queryGetAdmin = `
+                SELECT username, picturePath FROM Administrator
+                WHERE id = ?
+            `
+        const [admins2] = await db.query(queryGetAdmin, {
+            replacements: [id]
+        });
+
+        res.send(getSuccessResponse({ admin: admins2[0] }))
     } catch (error) {
         console.error(error)
         return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))

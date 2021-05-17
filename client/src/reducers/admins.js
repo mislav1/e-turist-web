@@ -10,6 +10,17 @@ const adminsData = (state = {admins: [], allAdminsCount: 0}, action) => {
     }
 };
 
+const currentAdmin = (state = {}, action) => {
+    switch (action.type) {
+        case types.SET_ADMIN_CURRENT_ADMIN:
+            return action.admin;
+        default:
+            return state;
+    }
+};
+
+
 export default combineReducers({
-    adminsData
+    adminsData,
+    currentAdmin
 });
