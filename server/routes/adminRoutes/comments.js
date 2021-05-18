@@ -66,7 +66,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
 
         let { id } = req.body;
 
-        if(!id){
+        if (!id) {
             return res.send(getBadRequestResponse("Wrong parameters!"))
         }
 
@@ -89,5 +89,99 @@ router.put('/delete-by-id', auth(), async (req, res) => {
     }
 })
 
+router.post('/add-new', auth(), async (req, res) => {
+    try {
+
+        let { userId, routeId, comment } = req.body;
+
+        if (!userId || !routeId || !comment) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryAddComment = `
+            INSERT INTO Comment(userId, routeId, comment) 
+            VALUES(?, ?, ?)
+        `
+
+        const [commentId] = await db.query(queryAddComment, {
+            replacements: [
+                userId,
+                routeId,
+                comment
+            ]
+        });
+
+        
+
+        res.send(getSuccessResponse({ comment: commentId }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.get('/load-by-id', auth(), async (req, res) => {
+    try {
+
+        let { id } = req.query;
+
+        if (!id) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryComment = `
+            SELECT c.* FROM Comment as c
+            WHERE c.isDeleted = ? AND c.id = ?
+        `
+
+        const [comments] = await db.query(queryComment, {
+            replacements: [
+                false,
+                id
+            ]
+        });
+
+        if (comments.length !== 1) {
+            return res.send(getNotFoundErrorResponse("Comment not found!"))
+        }
+
+        res.send(getSuccessResponse({ comment: comments[0] }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.put('/update-by-id', auth(), async (req, res) => {
+    try {
+
+        let { id, comment, userId, routeId } = req.body;
+
+        if (!id || !comment || !userId || !routeId) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryUpdateCommentName = `
+            UPDATE Comment 
+            SET comment = ?, routeId = ?, userId = ?
+            WHERE id = ?
+        `
+
+        await db.query(queryUpdateCommentName, {
+            replacements: [
+                comment,
+                routeId,
+                userId,
+                id
+            ]
+        });
+
+
+        res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
 
 module.exports = router;

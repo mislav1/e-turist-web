@@ -73,3 +73,109 @@ export function deleteOne(params) {
         }
     };
 }
+
+export function getCommentById(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/comments/load-by-id?id=${params.id}`
+
+            console.log("This is url: ", url)
+
+            const response = await api.get(url);
+
+            if (response.status === HttpStatus.Success && response.data.comment) {
+                dispatch({
+                    type: types.SET_ADMIN_CURRENT_COMMENT,
+                    comment: response.data.comment
+                });
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
+export function removeCurrentComment() {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: types.SET_ADMIN_CURRENT_COMMENT,
+            comment: {}
+        });
+    };
+}
+
+export function updateOne(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/comments/update-by-id`
+
+            console.log("This is url: ", url)
+
+            const response = await api.put(url, { id: params.id, userId: params.userId, routeId: params.routeId, comment: params.comment });
+
+            if (response.status === HttpStatus.Success) {
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                dispatch(actions.ui.setApiSucces("Komentar uspješno ažuriran"));
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
+export function addNew(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/comments/add-new`
+
+            console.log("This is url: ", url)
+
+            const response = await api.post(url, { userId: params.userId, routeId: params.routeId, comment: params.comment });
+
+            if (response.status === HttpStatus.Success) {
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                dispatch(actions.ui.setApiSucces("Komentar uspješno kreiran"));
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}

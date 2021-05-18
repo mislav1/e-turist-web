@@ -10,3 +10,4 @@ export const HttpStatus = {
 export const allowedExtensions = [".jpg", ".png", ".jpeg"]
 export const maxFileSize = 10 * 1024 * 1024
 export const NotificationDuration = 5000
+export const IconStyle = { width: "28px", height:"28px", objectFit: 'cover', borderRadius:"50%"}
