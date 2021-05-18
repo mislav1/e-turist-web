@@ -10,6 +10,16 @@ const usersData = (state = {users: [], allUsersCount: 0}, action) => {
     }
 };
 
+const currentUser = (state = {}, action) => {
+    switch (action.type) {
+        case types.SET_ADMIN_CURRENT_USER:
+            return action.user;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
-    usersData
+    usersData,
+    currentUser
 });

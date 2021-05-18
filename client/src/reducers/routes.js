@@ -10,6 +10,16 @@ const routesData = (state = {routes: [], allRoutesCount: 0}, action) => {
     }
 };
 
+const currentRoute = (state = {}, action) => {
+    switch (action.type) {
+        case types.SET_ADMIN_CURRENT_ROUTE:
+            return action.route;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
-    routesData
+    routesData,
+    currentRoute
 });

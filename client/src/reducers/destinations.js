@@ -10,6 +10,16 @@ const destinationsData = (state = {destinations: [], allDestinationsCount: 0}, a
     }
 };
 
+const currentDestination = (state = {}, action) => {
+    switch (action.type) {
+        case types.SET_ADMIN_CURRENT_DESTINATION:
+            return action.destination;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
-    destinationsData
+    destinationsData,
+    currentDestination
 });

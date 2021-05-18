@@ -1,0 +1,28 @@
+.form-container{
+    width: 70%;
+    margin: auto;
+
+    .form-container-inputs{
+        display: flex;
+        flex-direction: row;
+        .form{
+            flex-grow: 1;
+            margin-right: 40px;
+        }
+        img{
+            cursor: pointer;
+        }
+    }
+
+    .button-container{
+        margin: 40px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        button{
+            margin-right: 20px;
+        }
+    }
+}

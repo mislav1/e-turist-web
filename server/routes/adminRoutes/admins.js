@@ -236,10 +236,24 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
             replacements: [username, passwordHash, id]
         });
 
+        const queryFindCurrentAdmin = `
+            SELECT * FROM Administrator
+            WHERE id = ?
+        `
+        const [currentAdmins] = await db.query(queryFindCurrentAdmin, {
+            replacements: [id]
+        });
+
+        if(currentAdmins.length !== 1){
+            return res.send(getBadRequestResponse("User not found!"))
+        }
+
+        const currentAdmin = currentAdmins[0]
+
         if (body.files && body.files.length > 0) {
-            if (req.admin.picturePath) {
-                if (fs.existsSync(path.join(__dirname, "../../../", "uploads", req.admin.picturePath))) {
-                    fs.unlink(path.join(__dirname, "../../../", "uploads", req.admin.picturePath), (err) => {
+            if (currentAdmin.picturePath) {
+                if (fs.existsSync(path.join(__dirname, "../../../", "uploads", currentAdmin.picturePath))) {
+                    fs.unlink(path.join(__dirname, "../../../", "uploads", currentAdmin.picturePath), (err) => {
                         if (err) {
                             console.log("Deleting file error: ", err)
                         }

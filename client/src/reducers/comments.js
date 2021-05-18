@@ -10,6 +10,16 @@ const commentsData = (state = {comments: [], allCommentsCount: 0}, action) => {
     }
 };
 
+const currentComment = (state = {}, action) => {
+    switch (action.type) {
+        case types.SET_ADMIN_CURRENT_COMMENT:
+            return action.comment;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
-    commentsData
+    commentsData,
+    currentComment
 });
