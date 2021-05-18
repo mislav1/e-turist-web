@@ -28,9 +28,10 @@ router.get('/', auth(), async (req, res) => {
         else page = parseInt(page)
 
         const queryRouteComments = `
-            SELECT * FROM Comment
-            WHERE routeId = ? AND isDeleted = false
-            ORDER BY modifiedAt DESC
+            SELECT c.*, u.fullName, u.email, u.picturePath FROM Comment as c
+            LEFT JOIN User as u on u.id = c.userId
+            WHERE c.routeId = ? AND c.isDeleted = false AND u.isDeleted = false
+            ORDER BY c.modifiedAt DESC
             LIMIT ?, ? 
         `
         const [comments] = await db.query(queryRouteComments, {
