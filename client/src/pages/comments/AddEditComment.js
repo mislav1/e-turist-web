@@ -3,7 +3,7 @@ import AdminBase from "../../components/AdminBase"
 import { useDispatch, useSelector } from "react-redux"
 import * as actions from "../../actions"
 import { useHistory } from "react-router-dom";
-import { Form, Button, Dropdown } from 'semantic-ui-react'
+import { Form, Button, TextArea } from 'semantic-ui-react'
 import styles from "./AddEditComment.module.scss"
 import { IconStyle } from "../../lib/constants"
 require('dotenv').config()
@@ -176,7 +176,7 @@ const AddEditComment = (props) => {
         <AdminBase title={id ? "Ažuriraj komentar" : "Kreiraj novi komentar"} selectedElement={"comments"}>
             <div className={styles["form-container"]}>
                 <Form>
-                    <Form.Input
+                    <Form.TextArea
                         fluid
                         label='Komentar*'
                         placeholder='Komentar'
