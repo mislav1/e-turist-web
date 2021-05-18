@@ -21,10 +21,10 @@ router.get('/', auth(), async (req, res) => {
             routeId = parseInt(routeId)
         }
 
-        if(!limit || limit < 1) limit = 5;
+        if (!limit || limit < 1) limit = 5;
         else limit = parseInt(limit)
 
-        if(!page || page < 1) page = 1;
+        if (!page || page < 1) page = 1;
         else page = parseInt(page)
 
         const queryRouteComments = `
@@ -42,7 +42,48 @@ router.get('/', auth(), async (req, res) => {
             ]
         });
 
-        res.send(getSuccessResponse({comments}))
+        res.send(getSuccessResponse({ comments }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.post('/add-to-route', auth(), async (req, res) => {
+    try {
+
+        let { routeId, comment } = req.body;
+
+        if (!routeId || !comment) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        } else {
+            routeId = parseInt(routeId)
+        }
+
+        const queryInsertComment = `
+            INSERT INTO Comment(comment, userId, routeId)
+            VALUES(?, ?, ?)
+        `
+        const [newId, meta] = await db.query(queryInsertComment, {
+            replacements: [
+                comment,
+                req.user.id,
+                routeId
+            ]
+        });
+
+        const queryGetComment = `
+            SELECT c.*, u.fullName, u.email, u.picturePath FROM Comment as c
+            LEFT JOIN User as u on u.id = c.userId
+            WHERE c.id = ?
+        `
+        const [comments] = await db.query(queryGetComment, {
+            replacements: [
+                newId
+            ]
+        });
+
+        res.send(getSuccessResponse({ comment: comments[0] }))
     } catch (error) {
         console.error(error)
         return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
