@@ -73,3 +73,124 @@ export function deleteOne(params) {
         }
     };
 }
+
+export function addNew(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/destinations/add-new`
+
+            console.log("This is url: ", url)
+
+            const response = await api.postMultipart(url, { 
+                name: params.name, 
+                description: params.description,
+                routeId: params.routeId,
+                files: params.picture,
+                latitude: params.latitude,
+                longitude: params.longitude
+            });
+
+            if (response.status === HttpStatus.Success) {
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                dispatch(actions.ui.setApiSucces("Destinacija uspješno kreirana"));
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
+export function getDestinationById(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/destinations/load-by-id?id=${params.id}`
+
+            console.log("This is url: ", url)
+
+            const response = await api.get(url);
+            
+            if (response.status === HttpStatus.Success && response.data.destination) {
+                dispatch({
+                    type: types.SET_ADMIN_CURRENT_DESTINATION,
+                    destination: response.data.destination
+                });
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
+export function removeCurrentDestination() {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: types.SET_ADMIN_CURRENT_DESTINATION,
+            destination: {}
+        });
+    };
+}
+
+export function updateOne(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/destinations/update-by-id`
+
+            console.log("This is url: ", url)
+
+            const response = await api.putMultipart(url, { 
+                id: params.id, 
+                name: params.name, 
+                description: params.description,
+                routeId: params.routeId,
+                files: params.picture,
+                latitude: params.latitude,
+                longitude: params.longitude
+            });
+
+            if (response.status === HttpStatus.Success) {
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                dispatch(actions.ui.setApiSucces("Destinacija uspješno ažurirana"));
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}

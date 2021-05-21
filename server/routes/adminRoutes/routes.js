@@ -10,7 +10,8 @@ const {
     getSuccessResponse,
     getInternalServerErrorResponse,
     getBadRequestResponse,
-    parseFileRequest
+    parseFileRequest,
+    getNotFoundErrorResponse
 } = require("../../lib/utils")
 
 router.get('/', auth(), async (req, res) => {

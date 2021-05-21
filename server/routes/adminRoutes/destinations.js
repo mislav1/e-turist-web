@@ -3,10 +3,15 @@ const router = express.Router()
 const db = require("../../config/database")
 const { httpStatus } = require('../../lib/constants')
 const auth = require("../../lib/adminAuth")
+const formidableMiddleware = require("express-formidable")
+const fs = require("fs")
+const path = require("path");
 const {
     getSuccessResponse,
     getInternalServerErrorResponse,
-    getBadRequestResponse
+    getBadRequestResponse,
+    parseFileRequest,
+    getNotFoundErrorResponse
 } = require("../../lib/utils")
 
 router.get('/', auth(), async (req, res) => {
@@ -66,7 +71,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
 
         let { id } = req.body;
 
-        if(!id){
+        if (!id) {
             return res.send(getBadRequestResponse("Wrong parameters!"))
         }
 
@@ -89,5 +94,179 @@ router.put('/delete-by-id', auth(), async (req, res) => {
     }
 })
 
+router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
+    try {
+
+        const body = await parseFileRequest(req)
+
+        const { name, description, routeId, latitude, longitude } = body
+
+        if (!name || !description || !routeId || !latitude || !longitude) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        if (body.error) {
+            return res.send(getBadRequestResponse(body.error))
+        }
+
+        // check if destination already exists
+        const queryFindExistingDestination = `
+            SELECT * FROM Destination
+            WHERE name = ? AND routeId = ? AND isDeleted = false
+        `
+        const [existingDestinations] = await db.query(queryFindExistingDestination, {
+            replacements: [name, routeId]
+        });
+
+        if (existingDestinations.length > 0) {
+            return res.send(getBadRequestResponse("Destination already exists!"))
+        }
+
+        const queryInsertDestination = `
+            INSERT INTO Destination
+            (name, description, routeId, picturePath, coordinates)
+            VALUES (?, ?, ?, ?, POINT(?, ?))
+        `
+        await db.query(queryInsertDestination, {
+            replacements: [
+                name,
+                description,
+                routeId,
+                (body.files && body.files.length > 0) ? body.files[0].localFilename : null,
+                latitude,
+                longitude
+            ]
+        });
+
+        res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.get('/load-by-id', auth(), async (req, res) => {
+    try {
+
+        let { id } = req.query;
+
+        if (!id) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryDestination = `
+            SELECT d.* FROM Destination as d
+            WHERE d.isDeleted = ? AND d.id = ?
+        `
+
+        const [destinations] = await db.query(queryDestination, {
+            replacements: [
+                false,
+                id
+            ]
+        });
+
+        if (destinations.length !== 1) {
+            return res.send(getNotFoundErrorResponse("Destination not found!"))
+        }
+
+        res.send(getSuccessResponse({ destination: destinations[0] }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
+    try {
+
+        const body = await parseFileRequest(req)
+
+        const { name, description, routeId, latitude, longitude, id } = body
+
+        if (!name || !description || !routeId || !latitude || !longitude || !id) {
+            return res.send(getBadRequestResponse("Wrong parameters!"))
+        }
+
+        const queryFindDestination = `
+            SELECT * FROM Destination
+            WHERE id = ?
+        `
+        const [existingDestinations] = await db.query(queryFindDestination, {
+            replacements: [id]
+        });
+
+        if (existingDestinations.length !== 1) {
+            return res.send(getBadRequestResponse("Destination doesn't exist!"))
+        }
+
+        const queryUpdateDestination = `
+                UPDATE Destination
+                SET 
+                    name = ?,
+                    description = ?,
+                    routeId = ?,
+                    coordinates = POINT(?, ?)
+                WHERE id = ?
+            `
+        await db.query(queryUpdateDestination, {
+            replacements: [
+                name, 
+                description, 
+                routeId, 
+                latitude,
+                longitude, 
+                id
+            ]
+        });
+
+        const queryFindCurrentDestination = `
+            SELECT * FROM Destination
+            WHERE id = ?
+        `
+        const [currentDestinations] = await db.query(queryFindCurrentDestination, {
+            replacements: [id]
+        });
+
+        if (currentDestinations.length !== 1) {
+            return res.send(getBadRequestResponse("Route not found!"))
+        }
+
+        const currentDestination = currentDestinations[0]
+
+        if (body.files && body.files.length > 0) {
+            if (currentDestination.picturePath) {
+                if (fs.existsSync(path.join(__dirname, "../../../", "uploads", currentDestination.picturePath))) {
+                    fs.unlink(path.join(__dirname, "../../../", "uploads", currentDestination.picturePath), (err) => {
+                        if (err) {
+                            console.log("Deleting file error: ", err)
+                        }
+                    })
+                }
+            }
+            const queryUpdateDestinationImage = `
+                        UPDATE Destination
+                        SET picturePath = ?
+                        WHERE id = ?
+                    `
+            await db.query(queryUpdateDestinationImage, {
+                replacements: [body.files[0].localFilename, id]
+            });
+        }
+
+        const queryGetDestination = `
+                SELECT * FROM Destination
+                WHERE id = ?
+            `
+        const [destinations] = await db.query(queryGetDestination, {
+            replacements: [id]
+        });
+
+        res.send(getSuccessResponse({ destination: destinations[0] }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
 
 module.exports = router;
