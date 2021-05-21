@@ -4,6 +4,7 @@ import { ReactComponent as MoreIcon } from "../assets/more.svg"
 import styles from "./TableRow.module.scss"
 import MoreActions from "./MoreActions"
 import ClickAwayListener from 'react-click-away-listener';
+import {getRandomString} from "../lib/utils"
 
 const TableRow = ({ item, id, firstAction, secondAction, firstTitle, secondTitle }) => {
 
@@ -18,7 +19,7 @@ const TableRow = ({ item, id, firstAction, secondAction, firstTitle, secondTitle
             {
                 item.map((field, index) => {
                     return (
-                        <div className={index !== 0 ? styles["row-item-container"] : styles["first-or-last"]} key={index + field}>
+                        <div className={index !== 0 ? styles["row-item-container"] : styles["first-or-last"]} key={index + getRandomString()}>
                             {field}
                         </div>
                     )

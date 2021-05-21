@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Form, Button, TextArea } from 'semantic-ui-react'
 import styles from "./AddEditComment.module.scss"
 import { IconStyle } from "../../lib/constants"
+import { TextFieldNumberOfRows } from "../../lib/constants"
 require('dotenv').config()
 const { REACT_APP_UPLOADS_URL } = process.env
 
@@ -182,6 +183,7 @@ const AddEditComment = (props) => {
                         placeholder='Komentar'
                         error={errors.comment ? errors.comment : false}
                         value={comment}
+                        rows={TextFieldNumberOfRows}
                         onChange={e => {
                             if (e.target.value && errors.comment) {
                                 setErrors({

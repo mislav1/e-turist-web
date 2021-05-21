@@ -73,3 +73,120 @@ export function deleteOne(params) {
         }
     };
 }
+
+export function addNew(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/routes/add-new`
+
+            console.log("This is url: ", url)
+
+            const response = await api.postMultipart(url, { 
+                name: params.name, 
+                description: params.description,
+                cityId: params.cityId,
+                files: params.picture
+            });
+
+            if (response.status === HttpStatus.Success) {
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                dispatch(actions.ui.setApiSucces("Ruta uspješno kreirana"));
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
+export function getRouteById(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/routes/load-by-id?id=${params.id}`
+
+            console.log("This is url: ", url)
+
+            const response = await api.get(url);
+            
+            if (response.status === HttpStatus.Success && response.data.route) {
+                dispatch({
+                    type: types.SET_ADMIN_CURRENT_ROUTE,
+                    route: response.data.route
+                });
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
+export function removeCurrentRoute() {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: types.SET_ADMIN_CURRENT_ROUTE,
+            route: {}
+        });
+    };
+}
+
+export function updateOne(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/routes/update-by-id`
+
+            console.log("This is url: ", url)
+
+            const response = await api.putMultipart(url, { 
+                id: params.id, 
+                name: params.name, 
+                description: params.description,
+                cityId: params.cityId,
+                files: params.picture
+            });
+
+            if (response.status === HttpStatus.Success) {
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                dispatch(actions.ui.setApiSucces("Ruta uspješno ažurirana"));
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
