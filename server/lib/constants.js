@@ -8,5 +8,8 @@ module.exports = {
         Success: 200
     },
     maxFileSize: 10 * 1024 * 1024,
-    allowedExtensions: [".jpg", ".png", ".jpeg"]
+    allowedExtensions: [".jpg", ".png", ".jpeg"],
+    deletedUsersPassword: "Deleted1@",
+    deletedUsersEmail: "deleted@user.com",
+    deletedUsersName: "Deleted User"
 }

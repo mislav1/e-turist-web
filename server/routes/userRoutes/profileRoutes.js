@@ -3,7 +3,7 @@ const router = express.Router()
 const fs = require("fs")
 const path = require("path");
 const db = require("../../config/database")
-const { httpStatus } = require('../../lib/constants')
+const { httpStatus, deletedUsersPassword, deletedUsersEmail, deletedUsersName } = require('../../lib/constants')
 const formidableMiddleware = require("express-formidable")
 const shajs = require("sha.js")
 const { cryptoSecret } = require("../../config/config")
@@ -115,6 +115,45 @@ router.post('/change-password', auth(), async (req, res) => {
             await db.query(queryUpdateUserPassword, {
                 replacements: [newPasswordHash, req.user.id]
             });
+        }
+
+        res.send(getSuccessResponse({}))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
+router.put('/anonymize-user', auth(), async (req, res) => {
+    try {
+
+        const passwordHash = shajs('sha256')
+            .update(deletedUsersPassword + cryptoSecret)
+            .digest('hex')
+
+        const queryAnonymizeUser = `
+            UPDATE User
+            SET 
+                fullName = ?, 
+                email = ?,
+                password = ?,
+                isDeleted = true,
+                picturePath = null
+            WHERE id = ? 
+        `
+        const [users] = await db.query(queryAnonymizeUser, {
+            replacements: [deletedUsersName, req.user.id + deletedUsersEmail, passwordHash, req.user.id]
+        });
+
+        // Delete User Image
+        if (req.user.picturePath) {
+            if (fs.existsSync(path.join(__dirname, "../../../", "uploads", req.user.picturePath))) {
+                fs.unlink(path.join(__dirname, "../../../", "uploads", req.user.picturePath), (err) => {
+                    if (err) {
+                        console.log("Deleting file error: ", err)
+                    }
+                })
+            }
         }
 
         res.send(getSuccessResponse({}))
