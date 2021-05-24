@@ -13,9 +13,10 @@ const { REACT_APP_UPLOADS_URL } = process.env
 const AddEditAdmins = (props) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
     const [picture, setPicture] = useState(null)
     const [pictureSrc, setPictureSrc] = useState(null)
-    const [errors, setErrors] = useState({ username: "", password: "" })
+    const [errors, setErrors] = useState({ username: "", password: "", confirmPassword: "" })
     const inputFile = useRef(null)
 
     const dispatch = useDispatch();
@@ -81,20 +82,27 @@ const AddEditAdmins = (props) => {
     }
 
     const addNewAdmin = () => {
-        if (!username || !password) {
+        if (!username || !password || !confirmPassword) {
             setErrors({
                 username: username ? "" : "Korisničko ime je obavezno polje",
-                password: password ? "" : "Lozinka je obavezno polje"
+                password: password ? "" : "Lozinka je obavezno polje",
+                confirmPassword: confirmPassword ? "" : "Potrebno je potvrditi lozinku"
             })
 
             return
         }
 
         const passwordError = getPasswordError(password)
-        if(passwordError){
+        if (passwordError) {
             setErrors({
                 ...errors,
                 password: passwordError
+            })
+            return
+        } else if(password !== confirmPassword){
+            setErrors({
+                ...errors,
+                confirmPassword: "Lozinke se ne poklapaju"
             })
             return
         }
@@ -109,20 +117,27 @@ const AddEditAdmins = (props) => {
 
     const updateAdmin = (id) => {
 
-        if (!username || !password) {
+        if (!username || !password || !confirmPassword) {
             setErrors({
                 username: username ? "" : "Korisničko ime je obavezno polje",
-                password: password ? "" : "Lozinka je obavezno polje"
+                password: password ? "" : "Lozinka je obavezno polje",
+                confirmPassword: confirmPassword ? "" : "Potrebno je potvrditi lozinku"
             })
 
             return
         }
 
         const passwordError = getPasswordError(password)
-        if(passwordError){
+        if (passwordError) {
             setErrors({
                 ...errors,
                 password: passwordError
+            })
+            return
+        } else if(password !== confirmPassword){
+            setErrors({
+                ...errors,
+                confirmPassword: "Lozinke se ne poklapaju"
             })
             return
         }
@@ -178,6 +193,24 @@ const AddEditAdmins = (props) => {
                                     })
                                 }
                                 setPassword(e.target.value)
+                            }}
+                            type="password"
+                        />
+
+                        <Form.Input
+                            fluid
+                            label='Potvrdite Lozinku*'
+                            placeholder='Potvrdite Lozinku'
+                            error={errors.confirmPassword ? errors.confirmPassword : false}
+                            value={confirmPassword}
+                            onChange={e => {
+                                if (e.target.value && errors.confirmPassword) {
+                                    setErrors({
+                                        ...errors,
+                                        confirmPassword: ""
+                                    })
+                                }
+                                setConfirmPassword(e.target.value)
                             }}
                             type="password"
                         />
