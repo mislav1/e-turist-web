@@ -178,10 +178,12 @@ const sendEmail = (to, subject, text) => {
         text
     }
 
-    transporter.sendMail(mailOptions, () => {
-        if (err) {
-            throw new Error({ message: err })
-        }
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            throw new Error({ message: error })
+        } else {
+            console.log('Email sent: ' + info.response);
+          }
     })
 }
 
