@@ -4,6 +4,7 @@ const fs = require("fs")
 const path = require("path");
 const db = require("../../config/database")
 const { httpStatus, deletedUsersPassword, deletedUsersEmail, deletedUsersName } = require('../../lib/constants')
+const { logoutUser } = require("../../lib/loginUser")
 const formidableMiddleware = require("express-formidable")
 const shajs = require("sha.js")
 const { cryptoSecret } = require("../../config/config")
@@ -141,8 +142,13 @@ router.put('/anonymize-user', auth(), async (req, res) => {
                 picturePath = null
             WHERE id = ? 
         `
-        const [users] = await db.query(queryAnonymizeUser, {
-            replacements: [deletedUsersName, req.user.id + deletedUsersEmail, passwordHash, req.user.id]
+        await db.query(queryAnonymizeUser, {
+            replacements: [
+                deletedUsersName, 
+                req.user.id + deletedUsersEmail, 
+                passwordHash, 
+                req.user.id
+            ]
         });
 
         // Delete User Image
@@ -155,6 +161,8 @@ router.put('/anonymize-user', auth(), async (req, res) => {
                 })
             }
         }
+
+        await logoutUser(req.user.id)
 
         res.send(getSuccessResponse({}))
     } catch (error) {
