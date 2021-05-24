@@ -96,8 +96,8 @@ const ListCities = () => {
                             city.id,
                             city.name,
                             city.identifier,
-                            moment(city.createdAt).format("DD.MM.YYYY HH:MM"),
-                            moment(city.modifiedAt).format("DD.MM.YYYY HH:MM")
+                            moment(city.createdAt).format("DD.MM.YYYY HH:mm"),
+                            moment(city.modifiedAt).format("DD.MM.YYYY HH:mm")
                         ]
                         return (
                             <TableRow

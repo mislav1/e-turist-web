@@ -20,7 +20,7 @@ const TableRow = ({ item, id, firstAction, secondAction, firstTitle, secondTitle
                 item.map((field, index) => {
                     return (
                         <div className={index !== 0 ? styles["row-item-container"] : styles["first-or-last"]} key={index + getRandomString()}>
-                            {field}
+                            {field && field.length > 50 ? field.substring(0,50) + "..." : field}
                         </div>
                     )
                 })

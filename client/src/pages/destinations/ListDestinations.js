@@ -98,8 +98,8 @@ const ListDestinations = () => {
                             destination.picturePath,
                             destination.coordinates.coordinates.join(", "),
                             destination.city,
-                            moment(destination.createdAt).format("DD.MM.YYYY HH:MM"),
-                            moment(destination.modifiedAt).format("DD.MM.YYYY HH:MM")
+                            moment(destination.createdAt).format("DD.MM.YYYY HH:mm"),
+                            moment(destination.modifiedAt).format("DD.MM.YYYY HH:mm")
                         ]
                         return (
                             <TableRow

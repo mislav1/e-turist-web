@@ -5,6 +5,7 @@ import * as actions from "../actions"
 import ErrorMessage from "../components/ErrorMessage"
 import SuccessMessage from "../components/SuccessMessage"
 import { useHistory } from "react-router-dom";
+import { getPasswordError } from "../lib/utils"
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -14,7 +15,8 @@ const Login = () => {
 
     const localActions = {
         loginAdmin: (username, password, cb) => dispatch(actions.admin.loginAdmin(username, password, cb)),
-        checkToken: (successCallback, errorCallback) => dispatch(actions.admin.checktToken(successCallback, errorCallback))
+        checkToken: (successCallback, errorCallback) => dispatch(actions.admin.checktToken(successCallback, errorCallback)),
+        setApiError: (error) => dispatch(actions.ui.setApiError(error)),
     };
 
     const globalState = {
@@ -32,6 +34,15 @@ const Login = () => {
     }
 
     const handleLogin = () => {
+        const passwordError = getPasswordError(password)
+
+        if(!username){
+            localActions.setApiError("Unesite korisničko ime")
+            return
+        } else if (passwordError) {
+            localActions.setApiError(passwordError)
+            return
+        }
         localActions.loginAdmin(username, password, loginCallback)
     }
 

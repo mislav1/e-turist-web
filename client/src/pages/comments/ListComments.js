@@ -97,8 +97,8 @@ const ListComments = () => {
                             comment.comment,
                             comment.fullName,
                             comment.route,
-                            moment(comment.createdAt).format("DD.MM.YYYY HH:MM"),
-                            moment(comment.modifiedAt).format("DD.MM.YYYY HH:MM")
+                            moment(comment.createdAt).format("DD.MM.YYYY HH:mm"),
+                            moment(comment.modifiedAt).format("DD.MM.YYYY HH:mm")
                         ]
                         return (
                             <TableRow

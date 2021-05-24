@@ -96,8 +96,8 @@ const ListUsers = () => {
                             user.id,
                             user.email,
                             user.fullName,
-                            moment(user.createdAt).format("DD.MM.YYYY HH:MM"),
-                            moment(user.modifiedAt).format("DD.MM.YYYY HH:MM")
+                            moment(user.createdAt).format("DD.MM.YYYY HH:mm"),
+                            moment(user.modifiedAt).format("DD.MM.YYYY HH:mm")
                         ]
                         return (
                             <TableRow

@@ -95,8 +95,8 @@ const ListAdmins = () => {
                         const item = [
                             admin.id,
                             admin.username,
-                            moment(admin.createdAt).format("DD.MM.YYYY HH:MM"),
-                            moment(admin.modifiedAt).format("DD.MM.YYYY HH:MM")
+                            moment(admin.createdAt).format("DD.MM.YYYY HH:mm"),
+                            moment(admin.modifiedAt).format("DD.MM.YYYY HH:mm")
                         ]
                         return (
                             <TableRow

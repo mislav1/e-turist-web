@@ -97,8 +97,8 @@ const ListRoutes = () => {
                             route.name,
                             route.picturePath,
                             route.city,
-                            moment(route.createdAt).format("DD.MM.YYYY HH:MM"),
-                            moment(route.modifiedAt).format("DD.MM.YYYY HH:MM")
+                            moment(route.createdAt).format("DD.MM.YYYY HH:mm"),
+                            moment(route.modifiedAt).format("DD.MM.YYYY HH:mm")
                         ]
                         return (
                             <TableRow

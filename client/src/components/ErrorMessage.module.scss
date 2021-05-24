@@ -13,6 +13,9 @@
     svg{
         cursor: pointer;
     }
+    div{
+        margin: 5px;
+    }
 }
 
 .errorMessage{
@@ -23,6 +26,9 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 10px !important;
+    div{
+        margin: 5px;
+    }
     svg{
         cursor: pointer;
     }
