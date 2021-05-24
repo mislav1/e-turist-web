@@ -28,8 +28,18 @@ const apiSuccess = (state = null, action) => {
     }
 };
 
+const showSidebar = (state = false, action) => {
+    switch (action.type) {
+        case types.SET_SHOW_SIDEBAR:
+            return action.show;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     isLoading,
     apiError,
-    apiSuccess
+    apiSuccess,
+    showSidebar
 });

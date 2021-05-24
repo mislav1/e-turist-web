@@ -44,3 +44,9 @@ export function removeApiSucces(message) {
         dispatch({ type: types.SET_API_SUCCESS, message: null });
     };
 }
+
+export function setShowSideBar(show) {
+    return async (dispatch, getState) => {
+        dispatch({ type: types.SET_SHOW_SIDEBAR, show: show });
+    };
+}

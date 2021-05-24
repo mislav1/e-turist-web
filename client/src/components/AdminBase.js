@@ -21,6 +21,7 @@ const AdminBase = ({ children, title, selectedElement }) => {
         isLoading: useSelector(state => state.ui.isLoading),
         apiError: useSelector(state => state.ui.apiError),
         apiSuccess: useSelector(state => state.ui.apiSuccess),
+        showSidebar: useSelector(state => state.ui.showSidebar),
     };
 
     useEffect(() => {
@@ -34,7 +35,19 @@ const AdminBase = ({ children, title, selectedElement }) => {
 
     return (
         <div className={styles["base-container"]}>
-            <Sidebar selectedElement={selectedElement} />
+
+            {
+                globalState.showSidebar
+                    ?
+                    <div className={styles["sidebar-container-show"]}>
+                        <Sidebar selectedElement={selectedElement} />
+                    </div>
+                    :
+                    <div className={styles["sidebar-container"]}>
+                        <Sidebar selectedElement={selectedElement} />
+                    </div>
+            }
+
             <div className={styles["content-container"]}>
                 <div className={styles["content-title"]}>
                     <Header title={title} />

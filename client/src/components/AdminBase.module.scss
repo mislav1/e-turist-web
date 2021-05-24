@@ -27,6 +27,24 @@
         width: 100%;
         flex-grow: 1;
     }
+
+    @media (max-width: 1024px) {
+        .content-container{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            min-height: 100vh;
+            background-color: $light-grey;
+            padding: 30px;
+            margin-left: 0px;
+            min-width: 800px;
+        }
+
+        .sidebar-container{
+            display: none;
+        }
+    }
 }
 
 #api-message-id{
@@ -38,3 +56,4 @@
     /* justify-content: center; */
     left: calc(50% - 225px);
 }
+

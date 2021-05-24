@@ -1,27 +1,45 @@
-.form-container{
+.form-container {
     width: 70%;
     margin: auto;
 
-    .form-container-inputs{
+    .form-container-inputs {
         display: flex;
         flex-direction: row;
-        .form{
+        .form {
             flex-grow: 1;
             margin-right: 40px;
         }
-        img{
+        img {
             cursor: pointer;
         }
     }
 
-    .button-container{
+    @media (max-width: 1024px) {
+        .form-container-inputs {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            .form {
+                flex-grow: 1;
+                margin-right: 40px;
+                width: 100%;
+            }
+            img {
+                margin: 30px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .button-container {
         margin: 40px;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
 
-        button{
+        button {
             margin-right: 20px;
         }
     }

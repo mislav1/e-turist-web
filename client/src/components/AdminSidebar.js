@@ -10,11 +10,24 @@ import { ReactComponent as CommentsIcon } from "../assets/comments.svg"
 import { ReactComponent as UsersIcon } from "../assets/user.svg"
 import { ReactComponent as AdminIcon } from "../assets/admin.svg"
 import { ReactComponent as LogoutIcon } from "../assets/logout.svg"
+import { ReactComponent as MenuLightIcon } from "../assets/menu-light.svg"
 
-const AdminSidebar = ({ selectedElement }) => {    
+const AdminSidebar = ({ selectedElement }) => {
+
+    const dispatch = useDispatch();
+
+    const localActions = {
+        setShowSideBar: (show) => dispatch(actions.ui.setShowSideBar(show))
+    };
+
     return (
         <div className={styles["sidebar"]}>
-            <div className={styles["sidebar-title"]}>eTurist</div>
+            <div className={styles["sidebar-title-container"]}>
+                <div className={styles["sidebar-title"]}>eTurist</div>
+                <div onClick={() => localActions.setShowSideBar(false)}>
+                    <MenuLightIcon />
+                </div>
+            </div>
             <SidebarItem title={"Rute"} selected={selectedElement === "routes"} goTo={"routes"}>
                 <RouteIcon />
             </SidebarItem>
@@ -47,11 +60,13 @@ function SidebarItem({ title, selected = false, children, goTo }) {
     const dispatch = useDispatch();
 
     const localActions = {
-        logoutAdmin: (cb) => dispatch(actions.admin.logoutAdmin(cb))
+        logoutAdmin: (cb) => dispatch(actions.admin.logoutAdmin(cb)),
+        setShowSideBar: (show) => dispatch(actions.ui.setShowSideBar(show))
     };
 
     const handleClick = () => {
-        if(goTo === "logout"){
+        localActions.setShowSideBar(false)
+        if (goTo === "logout") {
             localActions.logoutAdmin(logoutCallback)
         } else {
             history.push("/admin/" + goTo)
