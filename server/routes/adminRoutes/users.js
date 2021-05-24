@@ -77,7 +77,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
         let { id } = req.body;
 
         if(!id){
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryUpdateUser = `
@@ -107,7 +107,7 @@ router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async
         const { fullName, password, email } = body
 
         if (!fullName || !password || !email) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const registrationFormError = getPasswordError(password)
@@ -130,7 +130,7 @@ router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async
         });
 
         if (users.length > 0) {
-            return res.send(getBadRequestResponse("Email already taken!"))
+            return res.send(getBadRequestResponse("Email je već zauzet!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -165,7 +165,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         let { id } = req.query;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryUser = `
@@ -181,7 +181,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         });
 
         if (users.length !== 1) {
-            return res.send(getNotFoundErrorResponse("User not found!"))
+            return res.send(getNotFoundErrorResponse("Korisnik nije pronađen!"))
         }
         delete users[0].password
         res.send(getSuccessResponse({ user: users[0] }))
@@ -199,7 +199,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         const { fullName, email, password, id } = body
 
         if (!id || !fullName || !password || !email) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const registrationFormError = getPasswordError(password)
@@ -217,7 +217,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         });
 
         if (users.length !== 1) {
-            return res.send(getBadRequestResponse("User doesn't exist!"))
+            return res.send(getBadRequestResponse("Korisnik ne postoji!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -248,7 +248,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         });
 
         if(currentUsers.length !== 1){
-            return res.send(getBadRequestResponse("User not found!"))
+            return res.send(getBadRequestResponse("Korisnik nije pronađen!"))
         }
 
         const currentUser = currentUsers[0]

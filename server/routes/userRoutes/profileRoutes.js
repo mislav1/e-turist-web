@@ -80,7 +80,7 @@ router.post('/change-password', auth(), async (req, res) => {
         let { oldPassword, newPassword } = req.body;
 
         if (!oldPassword || !newPassword || oldPassword === newPassword) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const newPasswordError = getPasswordError(newPassword)
@@ -106,7 +106,7 @@ router.post('/change-password', auth(), async (req, res) => {
         });
 
         if (users.length === 0) {
-            return res.send(getBadRequestResponse("Wrong old password!"))
+            return res.send(getBadRequestResponse("Pogrešna stara lozinka!"))
         } else {
             const queryUpdateUserPassword = `
                     UPDATE User

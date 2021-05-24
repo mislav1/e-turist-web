@@ -70,7 +70,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
         let { id } = req.body;
 
         if(!id){
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryUpdateRoute = `
@@ -100,7 +100,7 @@ router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async
         const { name, description, cityId } = body
 
         if (!name || !description || !cityId) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         if (body.error) {
@@ -117,7 +117,7 @@ router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async
         });
 
         if (existingRoutes.length > 0) {
-            return res.send(getBadRequestResponse("Route already exists!"))
+            return res.send(getBadRequestResponse("Ruta već postoji!"))
         }
 
         const queryInsertRoute = `
@@ -147,7 +147,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         let { id } = req.query;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryRoute = `
@@ -163,7 +163,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         });
 
         if (routes.length !== 1) {
-            return res.send(getNotFoundErrorResponse("Route not found!"))
+            return res.send(getNotFoundErrorResponse("Ruta nije pronađena!"))
         }
 
         res.send(getSuccessResponse({ route: routes[0] }))
@@ -181,7 +181,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         const { name, description, cityId, id } = body
 
         if (!id || !name || !description || !cityId) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryFindRoute = `
@@ -193,7 +193,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         });
 
         if (existingRoutes.length !== 1) {
-            return res.send(getBadRequestResponse("Route doesn't exist!"))
+            return res.send(getBadRequestResponse("Ruta nije pronađena!"))
         }
 
         const queryUpdateRoute = `
@@ -217,7 +217,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         });
 
         if(currentRoutes.length !== 1){
-            return res.send(getBadRequestResponse("Route not found!"))
+            return res.send(getBadRequestResponse("Ruta nije pronađena!"))
         }
 
         const currentRoute = currentRoutes[0]

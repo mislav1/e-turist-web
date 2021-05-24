@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
         const { username, password } = req.body
 
         if (!username || !password) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
         let admin = {}
 
         if (admins.length !== 1) {
-            return res.send(getNotFoundErrorResponse("Admin not found!"))
+            return res.send(getNotFoundErrorResponse("Administrator nije pronađen!"))
         } else {
             admin = admins[0]
             token = await loginAdmin(admin.id)

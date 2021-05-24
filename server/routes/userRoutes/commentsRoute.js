@@ -16,7 +16,7 @@ router.get('/', auth(), async (req, res) => {
         let { routeId, limit, page } = req.query;
 
         if (!routeId) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         } else {
             routeId = parseInt(routeId)
         }
@@ -55,7 +55,7 @@ router.post('/add-to-route', auth(), async (req, res) => {
         let { routeId, comment } = req.body;
 
         if (!routeId || !comment) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         } else {
             routeId = parseInt(routeId)
         }

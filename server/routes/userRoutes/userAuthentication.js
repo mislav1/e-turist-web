@@ -27,7 +27,7 @@ router.post('/register', formidableMiddleware({ multiples: true }), async (req, 
         const { email, password, fullName } = body
 
         if (!email || !password || !fullName) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const registrationFormError = getRegistrationFormError(email, password)
@@ -50,7 +50,7 @@ router.post('/register', formidableMiddleware({ multiples: true }), async (req, 
         });
 
         if (users.length > 0 && users[0].isValidated) {
-            return res.send(getBadRequestResponse("Email already taken!"))
+            return res.send(getBadRequestResponse("Email je već zauzet!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -103,7 +103,7 @@ router.post('/validate-account', async (req, res) => {
         const { email, password, validationCode } = req.body
 
         if (!email || !password || !validationCode) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -126,11 +126,11 @@ router.post('/validate-account', async (req, res) => {
         let user = {}
 
         if (users.length !== 1) {
-            return res.send(getNotFoundErrorResponse("User not found!"))
+            return res.send(getNotFoundErrorResponse("Korisnik nije pronađen!"))
         } else {
             user = users[0]
             if (user.validationCode !== validationCodeHash) {
-                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Neuspješna autorizacija!"))
             }
             token = await loginUser(user.id)
         }
@@ -152,7 +152,7 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body
 
         if (!email || !password) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const passwordHash = shajs('sha256')
@@ -171,7 +171,7 @@ router.post('/login', async (req, res) => {
         let user = {}
 
         if (users.length !== 1) {
-            return res.send(getNotFoundErrorResponse("User not found!"))
+            return res.send(getNotFoundErrorResponse("Korisnik nije pronađen!"))
         } else {
             user = users[0]
             token = await loginUser(user.id)

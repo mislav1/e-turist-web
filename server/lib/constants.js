@@ -9,7 +9,7 @@ module.exports = {
     },
     maxFileSize: 10 * 1024 * 1024,
     allowedExtensions: [".jpg", ".png", ".jpeg"],
-    deletedUsersPassword: "Deleted1@",
-    deletedUsersEmail: "deleted@user.com",
-    deletedUsersName: "Deleted User"
+    deletedUsersPassword: "Obrisan1@",
+    deletedUsersEmail: "obrisani@korisnik.hr",
+    deletedUsersName: "Obrisani Korisnik"
 }

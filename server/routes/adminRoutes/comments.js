@@ -67,7 +67,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
         let { id } = req.body;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryUpdateComment = `
@@ -95,7 +95,7 @@ router.post('/add-new', auth(), async (req, res) => {
         let { userId, routeId, comment } = req.body;
 
         if (!userId || !routeId || !comment) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryAddComment = `
@@ -126,7 +126,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         let { id } = req.query;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryComment = `
@@ -142,7 +142,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         });
 
         if (comments.length !== 1) {
-            return res.send(getNotFoundErrorResponse("Comment not found!"))
+            return res.send(getNotFoundErrorResponse("Komentar nije pronađen!"))
         }
 
         res.send(getSuccessResponse({ comment: comments[0] }))
@@ -158,7 +158,7 @@ router.put('/update-by-id', auth(), async (req, res) => {
         let { id, comment, userId, routeId } = req.body;
 
         if (!id || !comment || !userId || !routeId) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryUpdateCommentName = `

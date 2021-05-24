@@ -12,7 +12,7 @@ checkToken = () => {
             const token = req.headers['user-token'];
 
             if (!token || token.length === 0) {
-                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Neuspješna autorizacija!"))
             }
 
             const queryFindToken = `
@@ -24,7 +24,7 @@ checkToken = () => {
             });
 
             if (tokens.length !== 1) {
-                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Neuspješna autorizacija!"))
             }
 
             const queryFindUser = `
@@ -36,7 +36,7 @@ checkToken = () => {
             });
 
             if (users.length !== 1) {
-                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Neuspješna autorizacija!"))
             }
 
             req.user = users[0];

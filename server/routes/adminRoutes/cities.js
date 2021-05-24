@@ -64,7 +64,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         let { id } = req.query;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryCity = `
@@ -80,7 +80,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         });
 
         if (cities.length !== 1) {
-            return res.send(getNotFoundErrorResponse("City not found!"))
+            return res.send(getNotFoundErrorResponse("Grad nije pronađen!"))
         }
 
         res.send(getSuccessResponse({ city: cities[0] }))
@@ -96,7 +96,7 @@ router.put('/update-by-id', auth(), async (req, res) => {
         let { id, name, identifier } = req.body;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         if (name) {
@@ -143,7 +143,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
         let { id } = req.body;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryUpdateCity = `
@@ -171,7 +171,7 @@ router.post('/add-new', auth(), async (req, res) => {
         let { name, identifier } = req.body;
 
         if (!name || !identifier) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryAddCity = `

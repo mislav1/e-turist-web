@@ -45,7 +45,7 @@ const parseFileRequest = async (request) => {
     });
 
     if (files.length > 1) {
-        newBody.error = "Max number of allowed files to upload is 1!";
+        newBody.error = "Dozvoljen broj datoteka za upload je 1!";
         return newBody;
     }
 
@@ -60,10 +60,10 @@ const parseFileRequest = async (request) => {
                     const ext = "." + file.name.split('.').pop()
 
                     if (file && file.size > maxFileSize) {
-                        newBody.error = "Max upload size is 10MB!";
+                        newBody.error = "Maksimalna veličina datoteke 10MB!";
                         return;
                     } else if (!allowedExtensions.includes(ext)) {
-                        newBody.error = "Unsupported File Extension!";
+                        newBody.error = "Ekstenzija datoteke nije podržana!";
                         return;
                     }
 
@@ -153,9 +153,9 @@ const getUnauthorisedErrorResponse = (error) => {
 const getRegistrationFormError = (email, password) => {
 
     if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
-        return "Please enter valid email address!"
+        return "Email adresa nije valjana!"
     } else if (!/^(?=.*?[0-9])(?=.*[+!\-#$@]).{6,}$/.test(password)) {
-        return "Password must contain minimum 6 characters, at least one number and at least one special character (+,-,!,#,$,@)"
+        return "Lozinka mora sadržavati najmanje 6 znakova, barem jedan broj i barem jedan posebni znak (+,-,!,#,$,@)"
     }
 
     return ''
@@ -164,7 +164,7 @@ const getRegistrationFormError = (email, password) => {
 const getPasswordError = (password) => {
 
     if (!/^(?=.*?[0-9])(?=.*[+!\-#$@]).{6,}$/.test(password)) {
-        return "Password must contain minimum 6 characters, at least one number and at least one special character (+,-,!,#,$,@)"
+        return "Lozinka mora sadržavati najmanje 6 znakova, barem jedan broj i barem jedan posebni znak (+,-,!,#,$,@)"
     }
 
     return ''

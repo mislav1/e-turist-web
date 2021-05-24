@@ -12,7 +12,7 @@ checkToken = () => {
             const token = req.headers['token'];
 
             if (!token || token.length === 0) {
-                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Neuspješna autorizacija!"))
             }
 
             const queryFindToken = `
@@ -24,7 +24,7 @@ checkToken = () => {
             });
 
             if (tokens.length !== 1) {
-                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Neuspješna autorizacija!"))
             }
 
             const queryFindAdmin = `
@@ -36,7 +36,7 @@ checkToken = () => {
             });
 
             if (admins.length !== 1) {
-                return res.send(getUnauthorisedErrorResponse("Unauthorised!"))
+                return res.send(getUnauthorisedErrorResponse("Neuspješna autorizacija!"))
             }
 
             req.admin = admins[0];

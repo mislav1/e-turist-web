@@ -17,7 +17,7 @@ router.post('/add-visited', auth(), async (req, res) => {
         let userId = req.user.id
 
         if (!userId || !destinationId) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         } else {
             userId = parseInt(userId)
             destinationId = parseInt(destinationId)
@@ -35,7 +35,7 @@ router.post('/add-visited', auth(), async (req, res) => {
         });
 
         if(visited.length > 0){
-            return res.send(getBadRequestResponse("Destination already visited!"))
+            return res.send(getBadRequestResponse("Destinacija je već posjećena!"))
         }
 
         const queryAddVisited = `

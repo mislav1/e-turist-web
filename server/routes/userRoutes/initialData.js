@@ -16,7 +16,7 @@ router.get('/', auth(), async (req, res) => {
         const { identifier } = req.query;
 
         if (!identifier) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryCityData = `
@@ -30,7 +30,7 @@ router.get('/', auth(), async (req, res) => {
         });
 
         if (cities.length !== 1) {
-            return res.send(getNotFoundErrorResponse("City not found!"))
+            return res.send(getNotFoundErrorResponse("Grad nije pronađen!"))
         }
 
         const initialData = {

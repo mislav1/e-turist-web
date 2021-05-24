@@ -72,7 +72,7 @@ router.put('/delete-by-id', auth(), async (req, res) => {
         let { id } = req.body;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryUpdateDestination = `
@@ -102,7 +102,7 @@ router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async
         const { name, description, routeId, latitude, longitude } = body
 
         if (!name || !description || !routeId || !latitude || !longitude) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         if (body.error) {
@@ -151,7 +151,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
         let { id } = req.query;
 
         if (!id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryDestination = `
@@ -185,7 +185,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         const { name, description, routeId, latitude, longitude, id } = body
 
         if (!name || !description || !routeId || !latitude || !longitude || !id) {
-            return res.send(getBadRequestResponse("Wrong parameters!"))
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryFindDestination = `
@@ -197,7 +197,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         });
 
         if (existingDestinations.length !== 1) {
-            return res.send(getBadRequestResponse("Destination doesn't exist!"))
+            return res.send(getBadRequestResponse("Destinacija nije pronađena!"))
         }
 
         const queryUpdateDestination = `
@@ -229,7 +229,7 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
         });
 
         if (currentDestinations.length !== 1) {
-            return res.send(getBadRequestResponse("Route not found!"))
+            return res.send(getBadRequestResponse("Ruta nije pronađena!"))
         }
 
         const currentDestination = currentDestinations[0]
