@@ -127,7 +127,13 @@ export function updateOne(params) {
 
             console.log("This is url: ", url)
 
-            const response = await api.put(url, { id: params.id, userId: params.userId, routeId: params.routeId, comment: params.comment });
+            const response = await api.put(url, { 
+                id: params.id, 
+                userId: params.userId, 
+                routeId: params.routeId, 
+                comment: params.comment,
+                destinationId: params.destinationId 
+            });
 
             if (response.status === HttpStatus.Success) {
                 if (params.successCallback) {
@@ -158,7 +164,12 @@ export function addNew(params) {
 
             console.log("This is url: ", url)
 
-            const response = await api.post(url, { userId: params.userId, routeId: params.routeId, comment: params.comment });
+            const response = await api.post(url, { 
+                userId: params.userId, 
+                routeId: params.routeId, 
+                comment: params.comment,
+                destinationId: params.destinationId
+            });
 
             if (response.status === HttpStatus.Success) {
                 if (params.successCallback) {

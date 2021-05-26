@@ -92,22 +92,23 @@ router.put('/delete-by-id', auth(), async (req, res) => {
 router.post('/add-new', auth(), async (req, res) => {
     try {
 
-        let { userId, routeId, comment } = req.body;
+        let { userId, routeId, comment, destinationId } = req.body;
 
         if (!userId || !routeId || !comment) {
             return res.send(getBadRequestResponse("Pogrešni parametri!"))
         }
 
         const queryAddComment = `
-            INSERT INTO Comment(userId, routeId, comment) 
-            VALUES(?, ?, ?)
+            INSERT INTO Comment(userId, routeId, comment, destinationId) 
+            VALUES(?, ?, ?, ?)
         `
 
         const [commentId] = await db.query(queryAddComment, {
             replacements: [
                 userId,
                 routeId,
-                comment
+                comment,
+                destinationId
             ]
         });
 
@@ -155,7 +156,7 @@ router.get('/load-by-id', auth(), async (req, res) => {
 router.put('/update-by-id', auth(), async (req, res) => {
     try {
 
-        let { id, comment, userId, routeId } = req.body;
+        let { id, comment, userId, routeId, destinationId } = req.body;
 
         if (!id || !comment || !userId || !routeId) {
             return res.send(getBadRequestResponse("Pogrešni parametri!"))
@@ -163,7 +164,7 @@ router.put('/update-by-id', auth(), async (req, res) => {
 
         const queryUpdateCommentName = `
             UPDATE Comment 
-            SET comment = ?, routeId = ?, userId = ?
+            SET comment = ?, routeId = ?, userId = ?, destinationId = ?
             WHERE id = ?
         `
 
@@ -172,6 +173,7 @@ router.put('/update-by-id', auth(), async (req, res) => {
                 comment,
                 routeId,
                 userId,
+                destinationId || null,
                 id
             ]
         });

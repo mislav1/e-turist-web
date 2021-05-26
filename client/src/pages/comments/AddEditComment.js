@@ -16,9 +16,11 @@ const AddEditComment = (props) => {
     const [comment, setComment] = useState("")
     const [userId, setUserId] = useState("")
     const [routeId, setRouteId] = useState("")
+    const [destinationId, setDestinationId] = useState("")
     const [userOptions, setUserOptions] = useState([])
     const [routeOptions, setRouteOptions] = useState([])
-    const [errors, setErrors] = useState({ comment: "", userId: "", routeId: "" })
+    const [destinationOptions, setDestinationOptions] = useState([])
+    const [errors, setErrors] = useState({ comment: "", userId: "", routeId: "", destinationId: "" })
 
     const dispatch = useDispatch();
     let history = useHistory();
@@ -33,12 +35,16 @@ const AddEditComment = (props) => {
         deleteOne: (params) => dispatch(actions.comments.deleteOne(params)),
         getAllUsersData: (params) => dispatch(actions.users.getAllUsersData(params)),
         getAllRoutesData: (params) => dispatch(actions.routes.getAllRoutesData(params)),
+        getAllDestinationsData: (params) => dispatch(actions.destinations.getAllDestinationsData(params)),
+        getDestinationByRouteId: (params) => dispatch(actions.destinations.getDestinationBRouteId(params)),
+        removeAdminDestinations: () => dispatch(actions.destinations.removeAdminDestinations()),
     };
 
     const globalState = {
         currentComment: useSelector(state => state.comments.currentComment),
         usersData: useSelector(state => state.users.usersData),
         routesData: useSelector(state => state.routes.routesData),
+        destinationsData: useSelector(state => state.destinations.destinationsData),
     };
 
     useEffect(() => {
@@ -92,6 +98,41 @@ const AddEditComment = (props) => {
     }, [globalState.routesData.allRoutesCount])
 
     useEffect(() => {
+        const newOptions = globalState.destinationsData.destinations.map((destination) => {
+            return {
+                key: destination.id,
+                value: destination.id,
+                image: (
+                    <img
+                        src={
+                            destination.picturePath
+                                ?
+                                REACT_APP_UPLOADS_URL + destination.picturePath
+                                :
+                                'https://react.semantic-ui.com/images/wireframe/image.png'
+                        }
+                        style={IconStyle}
+                    />
+                ),
+                text: destination.name
+            }
+        })
+        newOptions.unshift({
+            key: -1,
+            value: null,
+            text: ""
+        })
+        setDestinationOptions(newOptions)
+    }, [globalState.destinationsData.destinations])
+
+    useEffect(() => {
+        routeId ?
+            localActions.getDestinationByRouteId({ routeId })
+            :
+            setDestinationOptions([])
+    }, [routeId])
+
+    useEffect(() => {
         localActions.getAllUsersData({
             page: 1,
             orderBy: 'id',
@@ -114,6 +155,7 @@ const AddEditComment = (props) => {
         }
         return () => {
             localActions.removeCurrentComment()
+            localActions.removeAdminDestinations()
         }
     }, [])
 
@@ -122,6 +164,7 @@ const AddEditComment = (props) => {
             setUserId(globalState.currentComment.userId)
             setComment(globalState.currentComment.comment)
             setRouteId(globalState.currentComment.routeId)
+            setDestinationId(globalState.currentComment.destinationId || null)
         }
 
     }, [globalState.currentComment.id])
@@ -143,6 +186,7 @@ const AddEditComment = (props) => {
             comment: comment ? comment : null,
             routeId: routeId ? routeId : null,
             userId: userId ? userId : null,
+            destinationId: destinationId ? destinationId : null,
             successCallback: () => { history.push("/admin/comments") }
         })
     }
@@ -162,6 +206,7 @@ const AddEditComment = (props) => {
             comment: comment ? comment : null,
             routeId: routeId ? routeId : null,
             userId: userId ? userId : null,
+            destinationId: destinationId ? destinationId : null,
             successCallback: () => { history.push("/admin/comments") }
         })
     }
@@ -234,6 +279,25 @@ const AddEditComment = (props) => {
                             }
                         }}
                         value={routeId}
+                    />
+                    <Form.Dropdown
+                        label='Odaberite destinaciju*'
+                        error={errors.routeId ? errors.routeId : false}
+                        placeholder='Odaberite destinaciju'
+                        search
+                        selection
+                        options={destinationOptions}
+                        noResultsMessage={"Nije pronađena niti jedna destinacija"}
+                        onChange={(e, { value }) => {
+                            setDestinationId(value ? value : "")
+                            if (value && errors.destinationId) {
+                                setErrors({
+                                    ...errors,
+                                    destinationId: ""
+                                })
+                            }
+                        }}
+                        value={destinationId}
                     />
                 </Form>
                 {

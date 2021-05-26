@@ -269,4 +269,33 @@ router.put('/update-by-id', auth(), formidableMiddleware({ multiples: true }), a
     }
 })
 
+router.get('/load-by-route-id', auth(), async (req, res) => {
+    try {
+
+        let { routeId } = req.query;
+
+        if (!routeId) {
+            return res.send(getBadRequestResponse("Pogrešni parametri!"))
+        }
+
+        const queryDestination = `
+            SELECT d.* FROM Destination as d
+            WHERE d.isDeleted = ? AND d.routeId = ?
+        `
+
+        const [destinations] = await db.query(queryDestination, {
+            replacements: [
+                false,
+                routeId
+            ]
+        });
+
+
+        res.send(getSuccessResponse({ destinations }))
+    } catch (error) {
+        console.error(error)
+        return res.status(httpStatus.InternalServerError).send(getInternalServerErrorResponse(error.name || error.message))
+    }
+})
+
 module.exports = router;

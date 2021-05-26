@@ -147,11 +147,55 @@ export function getDestinationById(params) {
     };
 }
 
+export function getDestinationBRouteId(params) {
+    return async (dispatch, getState) => {
+        dispatch(actions.ui.startLoading());
+
+        try {
+            let url = `/destinations/load-by-route-id?routeId=${params.routeId}`
+
+            console.log("This is url: ", url)
+
+            const response = await api.get(url);
+            
+            if (response.status === HttpStatus.Success && response.data.destinations) {
+                dispatch({
+                    type: types.SET_ADMIN_DESTINATIONS,
+                    destinationsData: response.data
+                });
+                if (params.successCallback) {
+                    params.successCallback();
+                }
+                
+            } else if (response.error) {
+                if (params.errorCallback) {
+                    params.errorCallback();
+                }
+                dispatch(actions.ui.setApiError(response.error));
+            }
+
+            dispatch(actions.ui.stopLoading());
+        } catch (e) {
+            console.error(e);
+            dispatch(actions.ui.stopLoading());
+        }
+    };
+}
+
 export function removeCurrentDestination() {
     return async (dispatch, getState) => {
         dispatch({
             type: types.SET_ADMIN_CURRENT_DESTINATION,
             destination: {}
+        });
+    };
+}
+
+export function removeAdminDestinations() {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: types.SET_ADMIN_DESTINATIONS,
+            destinationsData: {destinations: [], allDestinationsCount: 0}
         });
     };
 }

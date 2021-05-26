@@ -24,7 +24,8 @@ const ListDestinations = () => {
 
     const localActions = {
         getAllDestinationsData: (params) => dispatch(actions.destinations.getAllDestinationsData(params)),
-        deleteOne: (params) => dispatch(actions.destinations.deleteOne(params))
+        deleteOne: (params) => dispatch(actions.destinations.deleteOne(params)),
+        removeAdminDestinations: () => dispatch(actions.destinations.removeAdminDestinations()),
     };
 
     const globalState = {
@@ -33,6 +34,8 @@ const ListDestinations = () => {
 
     useEffect(() => {
         localActions.getAllDestinationsData(filters)
+
+        return () => localActions.removeAdminDestinations()
     }, [])
 
     useEffect(() => {
