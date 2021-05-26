@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Form, Button, Image } from 'semantic-ui-react'
 import styles from "./AddEditDestinations.module.scss"
 import { isPictureValid, getPasswordError } from "../../lib/utils"
-import { TextFieldNumberOfRows } from "../../lib/constants"
+import { TextFieldNumberOfRows, IconStyle } from "../../lib/constants"
 require('dotenv').config()
 const { REACT_APP_UPLOADS_URL } = process.env
 
@@ -68,7 +68,7 @@ const AddEditDestinations = (props) => {
             setName(globalState.currentDestination.name)
             setDescription(globalState.currentDestination.description)
             setRouteId(globalState.currentDestination.routeId)
-            console.log("GGGGGGGGGGGGGGGGGGGGGGG", globalState.currentDestination)
+            
             if (globalState.currentDestination.coordinates.coordinates) {
                 setLatitude(globalState.currentDestination.coordinates.coordinates[0] || "")
                 setLongitude(globalState.currentDestination.coordinates.coordinates[1] || "")
@@ -87,7 +87,19 @@ const AddEditDestinations = (props) => {
                 return {
                     key: route.id,
                     value: route.id,
-                    text: route.name
+                    text: route.name,
+                    image: (
+                        <img
+                            src={
+                                route.picturePath
+                                    ?
+                                    REACT_APP_UPLOADS_URL + route.picturePath
+                                    :
+                                    'https://react.semantic-ui.com/images/wireframe/image.png'
+                            }
+                            style={IconStyle}
+                        />
+                    ),
                 }
             })
             setRouteOptions(newOptions)

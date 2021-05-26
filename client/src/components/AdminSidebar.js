@@ -78,9 +78,9 @@ function SidebarItem({ title, selected = false, children, goTo }) {
     }
 
     return (
-        <div className={selected ? styles["sidebar-item-selected"] : styles["sidebar-item"]}>
-            <div className={styles["item-icon"]} onClick={handleClick}>{children}</div>
-            <div className={styles["item-text"]} onClick={handleClick}>{title}</div>
+        <div className={selected ? styles["sidebar-item-selected"] : styles["sidebar-item"]}  onClick={handleClick}>
+            <div className={styles["item-icon"]} >{children}</div>
+            <div className={styles["item-text"]} >{title}</div>
         </div>
     )
 }
