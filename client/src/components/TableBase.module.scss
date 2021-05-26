@@ -7,3 +7,16 @@
     display: flex;
     flex-direction: column;
 }
+
+@media (max-width: 1024px) {
+    .table-container{
+        width: 100%;
+        background: #FFFFFF;
+        border: 1px solid #DFE0EB;
+        box-sizing: border-box;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        min-width: 700px;
+    }     
+}
