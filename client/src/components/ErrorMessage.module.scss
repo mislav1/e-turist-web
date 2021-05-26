@@ -33,3 +33,9 @@
         cursor: pointer;
     }
 }
+
+@media (max-width: 768px) {
+    .errorMessage, .errorMessageFixed {
+        width: 300px;
+    }
+}

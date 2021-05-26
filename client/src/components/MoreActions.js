@@ -6,11 +6,11 @@ const MoreActions = ({firstTitle, firstAction, secondTitle, secondAction, id}) =
 
     return (
         <div className={styles["more-actions-container"]}>
-            <div className={styles["text-container"]} onClick={() => firstAction(id)}>
+            <div className={styles["text-container"]} onClick={() => firstAction(id)} onPointerDown={() => firstAction(id)}>
                 {firstTitle}
             </div>
             
-            <div className={styles["text-container"]} onClick={() => secondAction(id)}>
+            <div className={styles["text-container"]} onClick={() => secondAction(id)}  onPointerDown={() => secondAction(id)}>
                 {secondTitle}
             </div>
         </div>
