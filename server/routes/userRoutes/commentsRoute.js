@@ -27,17 +27,36 @@ router.get('/', auth(), async (req, res) => {
         if (!page || page < 1) page = 1;
         else page = parseInt(page)
 
+        if (destinationId) {
+            const queryRouteAndDestinationComments = `
+                SELECT c.*, u.fullName, u.email, u.picturePath FROM Comment as c
+                LEFT JOIN User as u on u.id = c.userId
+                WHERE c.routeId = ? AND c.isDeleted = false AND u.isDeleted = false AND c.destinationId = ?
+                ORDER BY c.modifiedAt DESC
+                LIMIT ?, ? 
+            `
+            const [comments] = await db.query(queryRouteAndDestinationComments, {
+                replacements: [
+                    routeId,
+                    destinationId || null,
+                    (page - 1) * limit,
+                    limit
+                ]
+            });
+
+            return res.send(getSuccessResponse({ comments }))
+        }
+
         const queryRouteAndDestinationComments = `
             SELECT c.*, u.fullName, u.email, u.picturePath FROM Comment as c
             LEFT JOIN User as u on u.id = c.userId
-            WHERE c.routeId = ? AND c.isDeleted = false AND u.isDeleted = false AND c.destinationId = ?
+            WHERE c.routeId = ? AND c.isDeleted = false AND u.isDeleted = false AND c.destinationId is null
             ORDER BY c.modifiedAt DESC
             LIMIT ?, ? 
         `
         const [comments] = await db.query(queryRouteAndDestinationComments, {
             replacements: [
                 routeId,
-                destinationId || null,
                 (page - 1) * limit,
                 limit
             ]
