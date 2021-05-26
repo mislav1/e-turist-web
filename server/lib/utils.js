@@ -187,6 +187,17 @@ const sendEmail = (to, subject, text) => {
     })
 }
 
+const isIntegerBetween = (number, min, max) => {
+    try {
+        parseInt(number)
+        if (number < min || number > max) return false
+    } catch (error) {
+        return false
+    }
+
+    return true
+}
+
 module.exports = {
     getRandomString,
     parseFileRequest,
@@ -197,5 +208,6 @@ module.exports = {
     sendEmail,
     getNotFoundErrorResponse,
     getUnauthorisedErrorResponse,
-    getPasswordError
+    getPasswordError,
+    isIntegerBetween
 }

@@ -121,3 +121,23 @@ ALTER TABLE User
 ADD COLUMN isDeleted BOOLEAN DEFAULT false;
 ALTER TABLE Comment
 ADD COLUMN isDeleted BOOLEAN DEFAULT false;
+
+
+ALTER TABLE Comment
+ADD COLUMN destinationId INT NULL,
+ADD FOREIGN KEY (destinationId) REFERENCES Destination(id);
+
+CREATE TABLE Rating (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    userId INT NOT NULL,
+    routeId INT NOT NULL,
+    destinationId INT NULL,
+    rating INT NOT NULL,
+    modifiedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    createdAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (routeId) REFERENCES Route(id),
+    FOREIGN KEY (destinationId) REFERENCES Destination(id),
+    FOREIGN KEY (userId) REFERENCES User(id)
+);
+
+ALTER TABLE Rating CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
