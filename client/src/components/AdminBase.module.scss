@@ -44,6 +44,12 @@
                 width: 100%;
                 flex-grow: 1;
                 overflow: auto;
+                -ms-overflow-style: none; /* IE and Edge */
+                scrollbar-width: none; /* Firefox */
+            }
+
+            .content::-webkit-scrollbar {
+                display: none;
             }
         }
 
