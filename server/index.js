@@ -7,12 +7,18 @@ let userRoutes = require('./routes/userRoutes');
 const db = require("./config/database")
 const { httpStatus } = require("./lib/constants")
 const cors = require("cors")
+const options = require("./config/swagger")
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
 
 db.authenticate()
   .then(() => console.log('Connection has been established successfully.'))
   .catch((error) => console.error('Unable to connect to the database:', error))
 
+const specs = swaggerJsDoc(options)
+
 const app = express();
+app.use("/documentation", swaggerUI.serve, swaggerUI.setup(specs))
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(methodOverride('_method'));
