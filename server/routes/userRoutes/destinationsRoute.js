@@ -10,9 +10,64 @@ const {
     getNotFoundErrorResponse,
 } = require("../../lib/utils")
 
+/**
+ * @swagger
+ * tags:
+ *   name: Destinacije
+ *   description: Upravljanje destinacijama
+ */
+
+/**
+ * @swagger
+ * /user/destinations/add-visited:
+ *   post:
+ *     security:
+ *       - APIKeyHeader: []
+ *     consumes:
+ *       - application/json
+ *     tags: [Destinacije]
+ *     parameters: [
+ *       {
+ *         "name": "body",
+ *         "in": "body",
+ *         "type": "object",
+ *         "required": true,
+ *         "schema": {
+ *           type: object,
+ *           properties: {
+ *              destinationId: {
+ *                  example: 1,
+ *                  type: integer,
+ *                  required: true
+ *              }
+ *           }
+ *         }
+ *       },
+ *     ]
+ *     summary: Api koji postavlja da je destinacija posjećena od strane korisnika
+ *     responses:
+ *       200:
+ *         description: Vraća status 200 ako je sve ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Api koji postavlja da je destinacija posjećena od strane korisnika
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri, destinacija je već posjećena
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.post('/add-visited', auth(), async (req, res) => {
     try {
-
         let { destinationId } = req.body;
         let userId = req.user.id
 
@@ -55,6 +110,48 @@ router.post('/add-visited', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /user/destinations/visited-by-user:
+ *   get:
+ *     security:
+ *       - APIKeyHeader: []
+ *     tags: [Destinacije]
+ *     parameters: [
+ *       {
+ *         "name": "limit",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "page",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *     ]
+ *     summary: Dohvaća destinacije koje je korisnik posjetio
+ *     responses:
+ *       200:
+ *         description: Lista destinacija
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dohvaća destinacije koje je korisnik posjetio. 
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.get('/visited-by-user', auth(), async (req, res) => {
     try {
 

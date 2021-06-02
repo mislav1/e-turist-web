@@ -15,20 +15,26 @@ const {
  * tags:
  *   name: Komentari
  *   description: Upravljanje komentarima
+ * securityDefinitions:
+ *   APIKeyHeader:
+ *       type: apiKey
+ *       in: header
+ *       name: user-token
+ *   APIAdminKeyHeader:
+ *       type: apiKey
+ *       in: header
+ *       name: token
  */
+
 
 /**
  * @swagger
  * /user/comments:
  *   get:
+ *     security:
+ *       - APIKeyHeader: []
  *     tags: [Komentari]
  *     parameters: [
- *      {
- *         "name": "user-token",
- *         "in": "header",
- *         "type": "string",
- *         "required": true
- *       },
  *       {
  *         "name": "routeId",
  *         "in": "query",
@@ -135,6 +141,58 @@ router.get('/', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /user/comments/add-to-route:
+ *   post:
+ *     security:
+ *       - APIKeyHeader: []
+ *     consumes:
+ *       - application/json
+ *     tags: [Komentari]
+ *     parameters: [
+ *       {
+ *         "name": "body",
+ *         "in": "body",
+ *         "type": "object",
+ *         "required": true,
+ *         "schema": {
+ *           type: object,
+ *           properties: {
+ *              comment: {
+ *                  example: "Primjer za komentar",
+ *                  type: string,
+ *              },
+ *              routeId: {
+ *                  example: 1,
+ *                  type: int,
+ *              }
+ *           }
+ *         }
+ *       },
+ *     ]
+ *     summary: Dodaje komentar ruti
+ *     responses:
+ *       200:
+ *         description: Vraća dodani komentar
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dodaje komentar ruti i vraća dodani komentar 
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.post('/add-to-route', auth(), async (req, res) => {
     try {
 

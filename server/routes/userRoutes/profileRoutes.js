@@ -17,6 +17,15 @@ const {
     getPasswordError,
 } = require("../../lib/utils")
 
+/**
+ * @swagger
+ * tags:
+ *   name: Profil
+ *   description: Upravljanje profilom korisnika
+ */
+
+
+
 router.put('/update', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
     try {
 
@@ -74,6 +83,60 @@ router.put('/update', auth(), formidableMiddleware({ multiples: true }), async (
     }
 })
 
+/**
+ * @swagger
+ * /user/profile/change-password:
+ *   post:
+ *     security:
+ *       - APIKeyHeader: []
+ *     consumes:
+ *       - application/json
+ *     tags: [Profil]
+ *     parameters: [
+ *       {
+ *         "name": "body",
+ *         "in": "body",
+ *         "type": "object",
+ *         "required": true,
+ *         "schema": {
+ *           type: object,
+ *           properties: {
+ *              oldPassword: {
+ *                  example: "123456$@",
+ *                  type: string,
+ *                  required: true
+ *              },
+ *              newPassword: {
+ *                  example: "12345$",
+ *                  type: string,
+ *                  required: true
+ *              }
+ *           }
+ *         }
+ *       },
+ *     ]
+ *     summary: Mijenja korisnikovu lozinku
+ *     responses:
+ *       200:
+ *         description: Vraća status 200 ako je sve ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Mijenja korisnikovu lozinku
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri, pogrešna stara lozinka, neispravna nova lozinka
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.post('/change-password', auth(), async (req, res) => {
     try {
 
@@ -125,6 +188,37 @@ router.post('/change-password', auth(), async (req, res) => {
     }
 })
 
+
+/**
+* @swagger
+* /user/profile/anonymize-user:
+*   put:
+*     security:
+*       - APIKeyHeader: []
+*     consumes:
+*       - application/json
+*     tags: [Profil]
+*     summary: Briše podatke o korisniku
+*     responses:
+*       200:
+*         description: Vraća status 200 ako je sve ok
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*       500:
+*         description: Pogreška na serveru
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               
+*     description: "Briše podatke o korisniku 
+*                   <br>Status u responsu može biti:
+*                   <br>&nbsp;&nbsp;200 -> uspješno 
+*                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+*                
+*/
 router.put('/anonymize-user', auth(), async (req, res) => {
     try {
 
