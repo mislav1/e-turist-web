@@ -10,6 +10,72 @@ const {
     getNotFoundErrorResponse,
 } = require("../../lib/utils")
 
+/**
+ * @swagger
+ * tags:
+ *   name: Komentari
+ *   description: Upravljanje komentarima
+ */
+
+/**
+ * @swagger
+ * /user/comments:
+ *   get:
+ *     tags: [Komentari]
+ *     parameters: [
+ *      {
+ *         "name": "user-token",
+ *         "in": "header",
+ *         "type": "string",
+ *         "required": true
+ *       },
+ *       {
+ *         "name": "routeId",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": true
+ *       },
+ *       {
+ *         "name": "destinationId",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "limit",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "page",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *     ]
+ *     summary: Dohvaća komentare od ruta ili destinacija
+ *     responses:
+ *       200:
+ *         description: Lista komentara
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dohvaća komentare od ruta ili destinacija ovisno o tome dobije li destinatioId query parametar. 
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.get('/', auth(), async (req, res) => {
     try {
 
