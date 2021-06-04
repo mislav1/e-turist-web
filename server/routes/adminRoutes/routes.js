@@ -64,6 +64,55 @@ router.get('/', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /admin/routes/delete-by-id:
+ *   put:
+ *     security:
+ *       - APIAdminKeyHeader: []
+ *     consumes:
+ *       - application/json
+ *     tags: [Rute]
+ *     parameters: [
+ *       {
+ *         "name": "body",
+ *         "in": "body",
+ *         "type": "object",
+ *         "required": true,
+ *         "schema": {
+ *           type: object,
+ *           properties: {
+ *              id: {
+ *                  example: 10,
+ *                  type: number,
+ *                  required: true
+ *              },
+ *           }
+ *         }
+ *       },
+ *     ]
+ *     summary: Omogućava administratoru brisanje rute
+ *     responses:
+ *       200:
+ *         description: Vraća status 200 ako je sve ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Omogućava administratoru brisanje rute
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.put('/delete-by-id', auth(), async (req, res) => {
     try {
 
@@ -92,6 +141,59 @@ router.put('/delete-by-id', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /admin/routes/add-new:
+ *   post:
+ *     security:
+ *       - APIAdminKeyHeader: []
+ *     consumes:
+ *       - multipart/form-data
+ *     tags: [Rute]
+ *     parameters: 
+ *      - name: files
+ *        in: formData
+ *        type: file
+ *        required: false
+ *        description: Slika rute
+ *      - name: name
+ *        in: formData
+ *        type: string
+ *        required: true
+ *        description: Ime rute
+ *      - name: description
+ *        in: formData
+ *        type: string
+ *        required: true
+ *        description: Opis rute
+ *      - name: cityId
+ *        in: formData
+ *        type: integer
+ *        required: true
+ *        description: Id grada
+ * 
+ *     summary: Omogućava dodavanje nove rute od strane administratora
+ *     responses:
+ *       200:
+ *         description: Vraća status 200 ako je sve ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Omogućava dodavanje nove rute od strane administratora
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri, ruta već postoji
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
     try {
 

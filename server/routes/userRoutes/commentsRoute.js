@@ -10,22 +10,6 @@ const {
     getNotFoundErrorResponse,
 } = require("../../lib/utils")
 
-/**
- * @swagger
- * tags:
- *   name: Komentari
- *   description: Upravljanje komentarima
- * securityDefinitions:
- *   APIKeyHeader:
- *       type: apiKey
- *       in: header
- *       name: user-token
- *   APIAdminKeyHeader:
- *       type: apiKey
- *       in: header
- *       name: token
- */
-
 
 /**
  * @swagger

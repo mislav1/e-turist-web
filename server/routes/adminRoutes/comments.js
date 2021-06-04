@@ -9,6 +9,61 @@ const {
     getBadRequestResponse
 } = require("../../lib/utils")
 
+
+/**
+ * @swagger
+ * /admin/comments/:
+ *   get:
+ *     security:
+ *       - APIAdminKeyHeader: []
+ *     tags: [Komentari]
+ *     parameters: [
+ *       {
+ *         "name": "limit",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "page",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "orderBy",
+ *         "in": "query",
+ *         "type": "string",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "ascOrDesc",
+ *         "in": "query",
+ *         "type": "string",
+ *         "required": false
+ *       },
+ *     ]
+ *     summary: Dohvaća komentare
+ *     responses:
+ *       200:
+ *         description: data -> Lista komentara + sveukupni broj komentara
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dohvaća komentare i sveukupni broj komentara
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.get('/', auth(), async (req, res) => {
     try {
 

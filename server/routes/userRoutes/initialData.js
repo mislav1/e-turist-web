@@ -10,6 +10,45 @@ const {
     getNotFoundErrorResponse,
 } = require("../../lib/utils")
 
+/**
+ * @swagger
+ * /user/initial-data:
+ *   get:
+ *     security:
+ *       - APIKeyHeader: []
+ *     tags: [Gradovi]
+ *     parameters: [
+ *       {
+ *         "name": "identifier",
+ *         "in": "query",
+ *         "type": "string",
+ *         "required": true,
+ *         "example": "zagreb"
+ *       },
+ *     ]
+ *     summary: Dohvaća podatke o rutama i destinacijama za pojedinačni grad
+ *     responses:
+ *       200:
+ *         description: Dohvaća podatke o rutama i destinacijama za pojedinačni grad
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dohvaća podatke o rutama i destinacijama za pojedinačni grad
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešno parametri 
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija
+ *                   <br>&nbsp;&nbsp;404 -> grad nije pronađen"
+ *                
+*/
 router.get('/', auth(), async (req, res) => {
     try {
 

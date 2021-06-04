@@ -17,14 +17,6 @@ const {
     getPasswordError,
 } = require("../../lib/utils")
 
-/**
- * @swagger
- * tags:
- *   name: Profil
- *   description: Upravljanje profilom korisnika
- */
-
-
 
 router.put('/update', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
     try {

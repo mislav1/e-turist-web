@@ -12,13 +12,6 @@ const {
 
 /**
  * @swagger
- * tags:
- *   name: Destinacije
- *   description: Upravljanje destinacijama
- */
-
-/**
- * @swagger
  * /user/destinations/add-visited:
  *   post:
  *     security:
