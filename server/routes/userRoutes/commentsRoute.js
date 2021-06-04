@@ -10,6 +10,62 @@ const {
     getNotFoundErrorResponse,
 } = require("../../lib/utils")
 
+
+/**
+ * @swagger
+ * /user/comments:
+ *   get:
+ *     security:
+ *       - APIKeyHeader: []
+ *     tags: [Komentari]
+ *     parameters: [
+ *       {
+ *         "name": "routeId",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": true
+ *       },
+ *       {
+ *         "name": "destinationId",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "limit",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *       {
+ *         "name": "page",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": false
+ *       },
+ *     ]
+ *     summary: Dohvaća komentare od ruta ili destinacija
+ *     responses:
+ *       200:
+ *         description: Lista komentara
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dohvaća komentare od ruta ili destinacija ovisno o tome dobije li destinatioId query parametar. 
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.get('/', auth(), async (req, res) => {
     try {
 
@@ -69,6 +125,58 @@ router.get('/', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /user/comments/add-to-route:
+ *   post:
+ *     security:
+ *       - APIKeyHeader: []
+ *     consumes:
+ *       - application/json
+ *     tags: [Komentari]
+ *     parameters: [
+ *       {
+ *         "name": "body",
+ *         "in": "body",
+ *         "type": "object",
+ *         "required": true,
+ *         "schema": {
+ *           type: object,
+ *           properties: {
+ *              comment: {
+ *                  example: "Primjer za komentar",
+ *                  type: string,
+ *              },
+ *              routeId: {
+ *                  example: 1,
+ *                  type: int,
+ *              }
+ *           }
+ *         }
+ *       },
+ *     ]
+ *     summary: Dodaje komentar ruti
+ *     responses:
+ *       200:
+ *         description: Vraća dodani komentar
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dodaje komentar ruti i vraća dodani komentar 
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.post('/add-to-route', auth(), async (req, res) => {
     try {
 

@@ -146,6 +146,58 @@ router.post('/validate-account', async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /user/authentication/login:
+ *   post:
+ *     consumes:
+ *       - application/json
+ *     tags: [Autentikacija]
+ *     parameters: [
+ *       {
+ *         "name": "body",
+ *         "in": "body",
+ *         "type": "object",
+ *         "required": true,
+ *         "schema": {
+ *           type: object,
+ *           properties: {
+ *              email: {
+ *                  example: "test@test.com",
+ *                  required: true
+ *              },
+ *              password: {
+ *                  example: "12345$",
+ *                  type: string,
+ *                  required: true
+ *              }
+ *           }
+ *         }
+ *       },
+ *     ]
+ *     summary: Logira korisnika
+ *     responses:
+ *       200:
+ *         description: Vraća korisnika i token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Logira korisnika
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija
+ *                   <br>&nbsp;&nbsp;404 -> korinsnik nije pronađen"
+ *                
+*/
 router.post('/login', async (req, res) => {
     try {
 
@@ -188,6 +240,36 @@ router.post('/login', async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /user/authentication/logout:
+ *   post:
+ *     consumes:
+ *       - application/json
+ *     security:
+ *       - APIKeyHeader: []
+ *     tags: [Autentikacija]
+ *     summary: Odjavljuje korisnika
+ *     responses:
+ *       200:
+ *         description: Vraća status 200 ako je sve ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Odjavljuje korisnika
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.post('/logout', auth(), async (req, res) => {
     try {
 

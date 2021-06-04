@@ -94,6 +94,69 @@ router.put('/delete-by-id', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /admin/destinations/add-new:
+ *   post:
+ *     security:
+ *       - APIAdminKeyHeader: []
+ *     consumes:
+ *       - multipart/form-data
+ *     tags: [Destinacije]
+ *     parameters: 
+ *      - name: files
+ *        in: formData
+ *        type: file
+ *        required: false
+ *        description: Slika destinacije
+ *      - name: name
+ *        in: formData
+ *        type: string
+ *        required: true
+ *        description: Ime destinacije
+ *      - name: description
+ *        in: formData
+ *        type: string
+ *        required: true
+ *        description: Opis destinacije
+ *      - name: routeId
+ *        in: formData
+ *        type: integer
+ *        required: true
+ *        description: Id rute kojoj desinacija pripada
+ *      - name: latitude
+ *        in: formData
+ *        type: number
+ *        required: true
+ *        description: Geografska širina
+ *      - name: longitude
+ *        in: formData
+ *        type: number
+ *        required: true
+ *        description: Geografska dužina
+ * 
+ *     summary: Omogućava dodavanje nove destinacije od strane administratora
+ *     responses:
+ *       200:
+ *         description: Vraća status 200 ako je sve ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Omogućava dodavanje nove destinacije od strane administratora
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri, destinacija već postoji
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async (req, res) => {
     try {
 
@@ -119,7 +182,7 @@ router.post('/add-new', auth(), formidableMiddleware({ multiples: true }), async
         });
 
         if (existingDestinations.length > 0) {
-            return res.send(getBadRequestResponse("Destination already exists!"))
+            return res.send(getBadRequestResponse("Destinacija već postoji!"))
         }
 
         const queryInsertDestination = `

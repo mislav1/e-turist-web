@@ -58,6 +58,44 @@ router.get('/', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /admin/cities/load-by-id:
+ *   get:
+ *     security:
+ *       - APIAdminKeyHeader: []
+ *     tags: [Gradovi]
+ *     parameters: [
+ *       {
+ *         "name": "id",
+ *         "in": "query",
+ *         "type": "number",
+ *         "required": true
+ *       },
+ *     ]
+ *     summary: Dohvaća grad po id-ju
+ *     responses:
+ *       200:
+ *         description: Dohvaća grad
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Dohvaća grad po id-ju
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešno parametri 
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija
+ *                   <br>&nbsp;&nbsp;404 -> grad nije pronađen"
+ *                
+*/
 router.get('/load-by-id', auth(), async (req, res) => {
     try {
 
@@ -90,6 +128,65 @@ router.get('/load-by-id', auth(), async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /admin/cities/update-by-id:
+ *   put:
+ *     security:
+ *       - APIAdminKeyHeader: []
+ *     consumes:
+ *       - application/json
+ *     tags: [Gradovi]
+ *     parameters: [
+ *       {
+ *         "name": "body",
+ *         "in": "body",
+ *         "type": "object",
+ *         "required": true,
+ *         "schema": {
+ *           type: object,
+ *           properties: {
+ *              id: {
+ *                  example: "4",
+ *                  type: string,
+ *                  required: true
+ *              },
+ *              name: {
+ *                  example: "test",
+ *                  type: string,
+ *                  required: false
+ *              },
+ *              identifier: {
+ *                  example: "test",
+ *                  type: string,
+ *                  required: false
+ *              }
+ *           }
+ *         }
+ *       },
+ *     ]
+ *     summary: Omogućava administratoru ažuriranje grada
+ *     responses:
+ *       200:
+ *         description: Vraća status 200 ako je sve ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Pogreška na serveru
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               
+ *     description: "Omogućava administratoru ažuriranje grada
+ *                   <br>Status u responsu može biti:
+ *                   <br>&nbsp;&nbsp;200 -> uspješno 
+ *                   <br>&nbsp;&nbsp;400 -> pogrešni parametri
+ *                   <br>&nbsp;&nbsp;401 -> neuspjela autorizacija"
+ *                
+*/
 router.put('/update-by-id', auth(), async (req, res) => {
     try {
 
