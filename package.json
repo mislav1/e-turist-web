@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha 'server/test/**/*.js' --recursive",
     "start": "node server/index.js",
     "start:dev": "nodemon server/index.js"
   },
@@ -25,5 +25,10 @@
     "sha.js": "^2.4.11",
     "swagger-jsdoc": "6.0.0",
     "swagger-ui-express": "^4.1.6"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^9.0.2"
   }
 }
